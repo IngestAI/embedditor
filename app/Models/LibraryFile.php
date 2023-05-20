@@ -59,6 +59,6 @@ class LibraryFile extends Model
             . '/' . round($this->library_id/1000, 0)
             . '/lib'
             . $this->library_id
-            . '.json';
+            . '.embd';
     }
 }
