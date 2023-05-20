@@ -63,6 +63,11 @@ class LibraryFile extends Model
         $rawFilePath = $this->getPathForSavingRawFile();
         $convertedFilePath = $this->getPathToSavingConvertedFile();
         ConverterResolver::make($rawFilePath)->resolve()->handle($convertedFilePath);
+        $storage = new UploadedStepService();
+        if ($storage->exists($convertedFilePath)) {
+            $this->formatted = true;
+            $this->save();
+        }
     }
 
     public function deleteConvertedFile()
@@ -119,6 +124,11 @@ class LibraryFile extends Model
             if (!empty($texts) && !empty($vectors)) {
                 $embeddedStorage->upload($embeddedFilePath, json_encode(['texts' => $texts, 'vectors' => $vectors]));
             }
+        }
+
+        if ($embeddedStorage->exists($convertedFilePath)) {
+            $this->embedded = true;
+            $this->save();
         }
     }
 
