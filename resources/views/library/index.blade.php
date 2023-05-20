@@ -21,20 +21,8 @@
                 <form id="library-form" action="{{ route('web::library::save') }}" method="POST" class="needs-validation" novalidate="">
                     @csrf
                     <div class="form-group">
-                        <label for="name">Library Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="{{ $library->name ?? 'Library #01' }}" required="required" value="{{ $library->name ?? '' }}">
-                    </div>
-                    <div class="form-group">
                         <label for="temperature">Creativity</label>
-                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.01' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="chunk-size">Detalization</label>
-                        <input type="range" class="form-range" min="1000" max="2000" step="100" id="chunk-size" name="chunk_size" value="{{ $library->chunk_size ?? '1000' }}" @if (!empty($library->chunk_size))disabled="disabled"@endif>
-                        @if (!empty($library->chunk_size))
-                            <input type="hidden" name="chunk_size" value="{{ $library->chunk_size }}">
-                            <p class="text-muted">This parameter can not be changed once saved.</p>
-                        @endif
+                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>

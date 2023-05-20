@@ -22,18 +22,14 @@ class LibrarySaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
             'temperature' => ['required', 'numeric', 'between:0.05,1'],
-            'chunk_size' => ['required', 'numeric', 'between:1000,2000'],
         ];
     }
 
     public function messages()
     {
         return [
-            "name.required" => "Library name is required",
             "temperature.required" => "Creativity is required",
-            'chunk_size.required' => "Detalization is required",
         ];
     }
 }
