@@ -20,7 +20,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ route('web::library::index') }}">
                 {{ config('app.name', 'Embedditor') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -31,9 +31,7 @@
 
     <main class="my-5">
         <div class="p-5 bg-body-tertiary">
-            <div class="container py-5">
-                @yield('content')
-            </div>
+            @yield('content')
         </div>
     </main>
 </div>
