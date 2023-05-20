@@ -32,7 +32,6 @@ PURPOSE(S):
 Most likely for people that want their PDF to be searchable.
 
 SYNTAX:
-include('class.pdf2text.php');
 $a = new PDF2Text();
 $a->setFilename('test.pdf');
 $a->decodePDF();
@@ -267,7 +266,6 @@ class PDF2Text {
         return $data;
     }
     function getDirtyTexts(&$texts, $textContainers) {
-
         for ($j = 0; $j < count($textContainers); $j++) {
             if (preg_match_all("#\[(.*)\]\s*TJ[\n|\r]#ismU", $textContainers[$j], $parts))
                 $texts = array_merge($texts, @$parts[1]);

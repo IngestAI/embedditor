@@ -39,8 +39,13 @@ class LocalStorageDriver implements StorageDriver
         return Storage::disk(self::DISK_LOCAL)->get($path);
     }
 
-    public function delete(string $path) : bool
+    public function delete(string $path): bool
     {
         return Storage::disk(self::DISK_LOCAL)->delete($path);
+    }
+
+    public function path(string $path): string
+    {
+        return Storage::disk(self::DISK_LOCAL)->path($path);
     }
 }

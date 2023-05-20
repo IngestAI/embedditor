@@ -13,4 +13,6 @@ interface StorageStepService
     public function exists(string $path): bool;
     public function get(string $path): mixed;
     public function delete(string $path): bool;
+
+    public function path(string $path): string;
 }

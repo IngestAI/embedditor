@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Converters\ConverterResolver;
 use App\Services\Storage\Adapters\UploadedStepService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,6 @@ class LibraryFile extends Model
     private function getPathForSavingRawFile(): string
     {
         return self::DISK_CORE_PATH
-            . '/'
             . '/' . self::DISK_SUB_PATH_RAW
             . '/' . round($this->library_id/10000, 0)
             . '/' . round($this->library_id/1000, 0)
@@ -50,6 +50,32 @@ class LibraryFile extends Model
         $service->delete($filePath);
     }
 
+    public function saveConvertedFile()
+    {
+        $rawFilePath = $this->getPathForSavingRawFile();
+        $convertedFilePath = $this->getPathToSavingConvertedFile();
+        ConverterResolver::make($rawFilePath)->resolve()->handle($convertedFilePath);
+    }
+
+    public function deleteConvertedFile()
+    {
+        $service = new UploadedStepService();
+        $filePath = $this->getPathToSavingConvertedFile();
+        $service->delete($filePath);
+    }
+
+    private function getPathToSavingConvertedFile() : string
+    {
+        return self::DISK_CORE_PATH
+            . '/'
+            .  self::DISK_SUB_PATH_DB
+            . '/' . round($this->library_id/10000, 0)
+            . '/' . round($this->library_id/1000, 0)
+            . '/'
+            . $this->id
+            . '.txt';
+    }
+
     private function getPathToLibraryEmbeddedFile() : string
     {
         return self::DISK_CORE_PATH
@@ -57,8 +83,8 @@ class LibraryFile extends Model
             .  self::DISK_SUB_PATH_DB
             . '/' . round($this->library_id/10000, 0)
             . '/' . round($this->library_id/1000, 0)
-            . '/lib'
-            . $this->library_id
+            . '/'
+            . $this->id
             . '.embd';
     }
 }
