@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('original_name');
             $table->string('filename');
             $table->string('file_key');
-            $table->boolean('uploaded');
-            $table->boolean('formatted');
-            $table->boolean('embedded');
+            $table->boolean('uploaded')->default(false);
+            $table->boolean('formatted')->default(false);
+            $table->boolean('embedded')->default(false);
             $table->timestamps();
 
 

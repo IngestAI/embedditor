@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LibraryController::class, 'index'])->name('web::library::index');
 
-Route::get('/save', [LibraryController::class, 'save'])->name('web::library::save');
+Route::post('/save', [LibraryController::class, 'save'])->name('web::library::save');
 
-Route::get('/file/upload', [FileController::class, 'upload'])->name('web::file::upload');
+Route::post('/file/upload', [FileController::class, 'upload'])->name('web::file::upload');
 Route::get('/file/download/{id}', [FileController::class, 'download'])->name('web::file::download');
