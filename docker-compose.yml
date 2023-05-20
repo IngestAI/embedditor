@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: foggy
+        uid: 1000
+      context: .
+      dockerfile: Dockerfile
+    image: embedditor
+    container_name: embedditor-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - .:/var/www
+    networks:
+      - embedditor
+  db:
+    image: mysql:5.7
+    container_name: embedditor-db
+    restart: unless-stopped
+    command: [--ignore-db-dir=lost+found]
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_DATABASE: embedditor
+      MYSQL_ROOT_PASSWORD: 1234
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - embedditor
+  nginx:
+    image: nginx:alpine
+    container_name: embedditor-nginx
+    restart: unless-stopped
+    ports:
+        - 8030:80
+    volumes:
+        - .:/var/www
+        - ./docker/nginx:/etc/nginx/conf.d/
+    networks:
+      - embedditor
+networks:
+  embedditor:
+    driver: bridge
+
