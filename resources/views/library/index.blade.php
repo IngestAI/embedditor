@@ -27,7 +27,6 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
-            <div class="card-footer align-items-center d-flex justify-content-between"></div>
         </div>
     </div>
 
@@ -46,17 +45,11 @@
                         </ul>
                     </div>
                 @endif
-                <form id="file-form" action="{{ route('web::file::upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
+                <form id="file-form" class="dropzone" action="{{ route('web::file::upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
                     @csrf
                     <input type="hidden" name="library_id" value="{{ $library->id ?? '' }}">
-                    <div class="form-group">
-                        <label for="file" class="form-label">Choose file</label>
-                        <input class="form-control" type="file" id="file" name="file">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
             </div>
-            <div class="card-footer align-items-center d-flex justify-content-between"></div>
         </div>
     </div>
 
@@ -84,16 +77,38 @@
                         @foreach ($library->files as $file)
                         <tr>
                             <td style="white-space: normal;">{{ $file->original_name }}</td>
-                            <td class="text-center"><a href="{{ route('web::file::download', ['key' => $file->file_key]) }}"><span class="material-symbols-rounded"><span>download_for_offline</span></span></a></td>
-                            <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
-                            <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
-                            <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
+                            <td class="text-center"><a href="{{ route('web::file::download', ['key' => $file->file_key]) }}"><i class="bi bi-arrow-down-circle h5 text-primary"></i></a></td>
+                            <td class="text-center">
+                                @if ($file->uploaded)
+                                    <i class="bi bi-check-circle h5 text-success"></i>
+                                @else
+                                    <i class="bi bi-exclamation-circle h5 text-danger"></i>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if ($file->formatted)
+                                    <i class="bi bi-check-circle h5 text-success"></i>
+                                @else
+                                    <i class="bi bi-exclamation-circle h5 text-danger"></i>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if ($file->embedded)
+                                    <i class="bi bi-check-circle h5 text-success"></i>
+                                @else
+                                    <i class="bi bi-exclamation-circle h5 text-danger"></i>
+                                @endif
+                            </td>
 
                             <td>
-                                <div class="d-flex justify-content-end align-items-center">
-                                    <a href="javascript:void(0);" class="file-show-raw" data-id="" data-tippy-content="Show Raw Content" data-bs-toggle="modal" data-bs-target="#examplescrolling"><span class="material-symbols-rounded align-middle fs-5 text-body">manage_search</span></a>
+                                <div class="d-flex align-items-center">
+                                    <a href="javascript:void(0);" class="file-show-raw" data-id="" data-tippy-content="Show Raw Content" data-bs-toggle="modal" data-bs-target="#examplescrolling"><i class="bi bi-pencil h5 text-dark"></i></a>
                                     <span class="border-start mx-2 d-block height-20"></span>
-                                    <a href="{{ route('web::file::delete', ['library_file' => $file->id]) }}" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>
+                                    <a href="" class="file-delete" data-id="" data-tippy-content="Delete File"><i class="bi bi-search h5 text-dark"></i></a>
+                                    <span class="border-start mx-2 d-block height-20"></span>
+                                    <a href="{{ route('web::file::delete', ['library_file' => $file->id]) }}" class="file-delete" data-id="" data-tippy-content="Delete File">
+                                        <i class="bi bi-trash h5 text-dark"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -102,8 +117,34 @@
                     </table>
                 </div>
             </div>
-            <div class="card-footer align-items-center d-flex justify-content-between"></div>
         </div>
     </div>
     @endif
+@endsection
+
+@section('js')
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+
+        Dropzone.options.uiDZResume = {
+            success: function(file, response){
+                alert(response);
+            }
+        };
+
+        $(document).ready(function () {
+            $("#file-form").dropzone({
+                url: '{{ route('web::file::upload') }}',
+                maxFiles: 1,
+                acceptedFiles: '.txt,.csv,.pdf',
+                maxFilesize: 3,
+                init: function () {
+                    this.on("success", function (file, response) {
+                        setTimeout(() => location.reload(), 1000);
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
