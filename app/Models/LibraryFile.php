@@ -77,6 +77,14 @@ class LibraryFile extends Model
         $storage->delete($filePath);
     }
 
+    public function getConvertedFile()
+    {
+        $storage = new UploadedStepService();
+        $convertedFilePath = $this->getPathToSavingConvertedFile();
+
+        return $storage->get($convertedFilePath);
+    }
+
     public function saveEmbeddedFile()
     {
         $rawStorage = new UploadedStepService();
