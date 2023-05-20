@@ -93,7 +93,7 @@
                                 <div class="d-flex justify-content-end align-items-center">
                                     <a href="javascript:void(0);" class="file-show-raw" data-id="" data-tippy-content="Show Raw Content" data-bs-toggle="modal" data-bs-target="#examplescrolling"><span class="material-symbols-rounded align-middle fs-5 text-body">manage_search</span></a>
                                     <span class="border-start mx-2 d-block height-20"></span>
-                                    <a href="{{ route('web::file::delete', ['id' => $file->id]) }}" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>
+                                    <a href="{{ route('web::file::delete', ['library_file' => $file->id]) }}" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>
                                 </div>
                             </td>
                         </tr>
