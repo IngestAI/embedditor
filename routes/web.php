@@ -21,4 +21,4 @@ Route::post('/save', [LibraryController::class, 'save'])->name('web::library::sa
 
 Route::post('/file/upload', [FileController::class, 'upload'])->name('web::file::upload');
 Route::get('/file/download/{key}', [FileController::class, 'download'])->name('web::file::download');
-Route::get('/file/delete/{id}', [FileController::class, 'delete'])->name('web::file::delete');
+Route::get('/file/delete/{library_file}', [FileController::class, 'delete'])->name('web::file::delete');

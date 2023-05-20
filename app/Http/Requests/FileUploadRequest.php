@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\LibraryFile;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class FileUploadRequest extends FormRequest
 {
@@ -34,5 +36,22 @@ class FileUploadRequest extends FormRequest
             'file.max' => 'Max file size is 100M bytes',
             'file.mimes' => "File can be txt or csv or pdf format",
         ];
+    }
+
+    public function passedValidation()
+    {
+        do {
+            $fileKey = Str::random(rand(32, 64));
+            $checkKey = LibraryFile::where('file_key', $fileKey)->first();
+        } while (!empty($checkKey->id));
+
+        $originalName = request()->file('file')->getClientOriginalName();
+
+        $this->merge([
+            'file_key' => $fileKey,
+            'original_name' => $originalName,
+            'filename' => time() . $originalName,
+            'raw_content' => request()->file('file')->get(),
+        ]);
     }
 }
