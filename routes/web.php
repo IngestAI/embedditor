@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LibraryController::class, 'index'])->name('web::library::index');
+
+Route::get('/save', [LibraryController::class, 'save'])->name('web::library::save');
+
+Route::get('/file/upload', [FileController::class, 'upload'])->name('web::file::upload');
+Route::get('/file/download/{id}', [FileController::class, 'download'])->name('web::file::download');
