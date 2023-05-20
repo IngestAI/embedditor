@@ -24,15 +24,19 @@ class FileController extends Controller
         $libraryFile->filename = time() . $file->getClientOriginalName();
         $libraryFile->save();
 
-        dd($file);
-        $file->move($destinationPath,$file->getClientOriginalName());
-
-
-        return view('library.index');
+        return redirect('/');
     }
 
     public function download()
     {
-        return view('library.index');
+        return redirect('/');
+    }
+
+    public function delete($id)
+    {
+        $libraryFile = LibraryFile::find($id);
+        $libraryFile->delete();
+
+        return redirect('/');
     }
 }

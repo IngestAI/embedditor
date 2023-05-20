@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    @if (!empty($library->files))
+    @if (!empty($library->files) && count($library->files))
     <div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
@@ -96,7 +96,7 @@
                         @foreach ($library->files as $file)
                         <tr>
                             <td style="white-space: normal;">{{ $file->original_name }}</td>
-                            <td class="text-center"><a href="{{ route('web::file::download', ['id' => $file->file_key]) }}"><span class="material-symbols-rounded"><span>download_for_offline</span></span></a></td>
+                            <td class="text-center"><a href="{{ route('web::file::download', ['key' => $file->file_key]) }}"><span class="material-symbols-rounded"><span>download_for_offline</span></span></a></td>
                             <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
                             <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
                             <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>
@@ -105,7 +105,7 @@
                                 <div class="d-flex justify-content-end align-items-center">
                                     <a href="javascript:void(0);" class="file-show-raw" data-id="" data-tippy-content="Show Raw Content" data-bs-toggle="modal" data-bs-target="#examplescrolling"><span class="material-symbols-rounded align-middle fs-5 text-body">manage_search</span></a>
                                     <span class="border-start mx-2 d-block height-20"></span>
-                                    <a href="javascript:void(0);" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>
+                                    <a href="{{ route('web::file::delete', ['id' => $file->id]) }}" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>
                                 </div>
                             </td>
                         </tr>
