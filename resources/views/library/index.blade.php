@@ -118,48 +118,4 @@
         </div>
     </div>
     @endif
-
-{{--        <div class="col-12 mb-3 mb-lg-5">--}}
-{{--            <div class="card">--}}
-{{--                <div class="card-header d-flex align-items-center justify-content-between">--}}
-{{--                    <h5 class="mb-0">Files</h5>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <div class="table-responsive table-card table-nowrap">--}}
-{{--                        <table class="table align-middle table-hover mb-0">--}}
-{{--                            <thead>--}}
-{{--                            <tr>--}}
-{{--                                <th>File</th>--}}
-{{--                                <th class="text-center">Download</th>--}}
-{{--                                <th class="text-center">Uploaded</th>--}}
-{{--                                <th class="text-center">Readed</th>--}}
-{{--                                <th class="text-center">Analyzed</th>--}}
-
-{{--                                <th class="text-end">Options</th>--}}
-{{--                            </tr>--}}
-{{--                            </thead>--}}
-{{--                            <tbody>--}}
-{{--                            <tr>--}}
-{{--                                <td style="white-space: normal;"></td>--}}
-{{--                                <td class="text-center"><a href="{{ route('web::file::download', ['id' => 1]) }}"><span class="material-symbols-rounded"><span>download_for_offline</span></span></a></td>--}}
-{{--                                <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>--}}
-{{--                                <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>--}}
-{{--                                <td class="text-center"><span class="material-symbols-rounded text-success"><span>check_circle</span></span></td>--}}
-
-{{--                                <td>--}}
-{{--                                    <div class="d-flex justify-content-end align-items-center">--}}
-{{--                                        <a href="javascript:void(0);" class="file-show-raw" data-id="" data-tippy-content="Show Raw Content" data-bs-toggle="modal" data-bs-target="#examplescrolling"><span class="material-symbols-rounded align-middle fs-5 text-body">manage_search</span></a>--}}
-{{--                                        <span class="border-start mx-2 d-block height-20"></span>--}}
-{{--                                        <a href="javascript:void(0);" class="file-delete" data-id="" data-tippy-content="Delete File"><span class="material-symbols-rounded align-middle fs-5 text-body">delete</span></a>--}}
-{{--                                    </div>--}}
-{{--                                </td>--}}
-{{--                            </tr>--}}
-{{--                            </tbody>--}}
-{{--                        </table>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="card-footer align-items-center d-flex justify-content-between"></div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 @endsection
