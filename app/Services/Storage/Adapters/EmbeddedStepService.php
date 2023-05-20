@@ -8,6 +8,7 @@ use App\Services\Storage\Events\Delete\DeleteEmbeddedStorageEvent;
 use App\Services\Storage\Events\Download\DownloadEmbeddedStorageEvent;
 use App\Services\Storage\Events\Exists\ExistsEmbeddedStorageEvent;
 use App\Services\Storage\Events\Get\GetEmbeddedStorageEvent;
+use App\Services\Storage\Events\Path\PathEmbeddedStorageEvent;
 use App\Services\Storage\Events\Upload\UploadEmbeddedStorageEvent;
 use App\Services\Storage\Events\UploadStream\UploadStreamEmbeddedStorageEvent;
 
@@ -58,6 +59,13 @@ class EmbeddedStepService implements StorageStepService
     public function delete(string $path): bool
     {
         $event = new DeleteEmbeddedStorageEvent($path);
+
+        return $event->exec()->getResult();
+    }
+
+    public function path(string $path): string
+    {
+        $event = new PathEmbeddedStorageEvent($path);
 
         return $event->exec()->getResult();
     }

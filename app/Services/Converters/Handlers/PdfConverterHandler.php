@@ -2,11 +2,21 @@
 
 namespace App\Services\Converters\Handlers;
 
-class PdfConverterHandler implements ConverterHandler
+use App\Services\Converters\Handlers\Libraries\PDF2Text;
+use App\Services\Storage\Adapters\UploadedStepService;
+
+class PdfConverterHandler extends BaseConverterHandler
 {
 
-    public function handle(): ConverterHandler
+    public function handle(string $convertedFile): ConverterHandler
     {
-        include_once('Libraries/PDF2Text.php');
+        $storage = new UploadedStepService();
+
+        $converter = new PDF2Text();
+        $converter->setFilename($storage->path($this->rawFile));
+        $converter->decodePDF();
+        $storage->copy($convertedFile, $converter->output());
+
+        return $this;
     }
 }

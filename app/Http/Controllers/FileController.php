@@ -11,7 +11,8 @@ class FileController extends Controller
     {
         $libraryFile = LibraryFile::create($request->only(['library_id', 'original_name', 'file_key', 'filename']));
         $libraryFile->saveRawFile($request->raw_content);
-
+        $libraryFile->saveConvertedFile();
+        $libraryFile->saveEmbeddedFile();
 
         return redirect('/');
     }
@@ -30,6 +31,8 @@ class FileController extends Controller
     {
         $libraryFile->delete();
         $libraryFile->deleteRawFile();
+        $libraryFile->deleteConvertedFile();
+        $libraryFile->deleteEmbeddedFile();
 
         return redirect('/');
     }

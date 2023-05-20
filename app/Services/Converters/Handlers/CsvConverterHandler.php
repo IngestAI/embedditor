@@ -2,11 +2,16 @@
 
 namespace App\Services\Converters\Handlers;
 
-class CsvConverterHandler implements ConverterHandler
-{
+use App\Services\Storage\Adapters\UploadedStepService;
 
-    public function handle(): ConverterHandler
+class CsvConverterHandler extends BaseConverterHandler
+{
+    public function handle(string $convertedFile): ConverterHandler
     {
-        // TODO: Implement handle() method.
+        $storage = new UploadedStepService();
+
+        $storage->copy($convertedFile, $storage->get($this->rawFile));
+
+        return $this;
     }
 }

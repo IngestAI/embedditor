@@ -26,11 +26,11 @@ final class ConverterResolver
         $extension = explode('.', basename($this->rawFile))[1] ?? '';
         switch ($extension) {
             case 'pdf':
-                return new PdfConverterHandler();
+                return new PdfConverterHandler($this->rawFile);
             case 'csv':
-                return new CsvConverterHandler();
+                return new CsvConverterHandler($this->rawFile);
         }
 
-        return new TextConverterHandler();
+        return new TextConverterHandler($this->rawFile);
     }
 }

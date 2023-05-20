@@ -2,11 +2,16 @@
 
 namespace App\Services\Converters\Handlers;
 
-class TextConverterHandler implements ConverterHandler
+use App\Services\Storage\Adapters\UploadedStepService;
+
+class TextConverterHandler extends BaseConverterHandler
 {
 
-    public function handle(): ConverterHandler
+    public function handle(string $convertedFile): ConverterHandler
     {
-       return $this;
+        $storage = new UploadedStepService();
+        $storage->copy($convertedFile, $storage->get($this->rawFile));
+
+        return $this;
     }
 }
