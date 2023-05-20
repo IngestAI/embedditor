@@ -48,11 +48,6 @@
                 <form id="file-form" class="dropzone" action="{{ route('web::file::upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="">
                     @csrf
                     <input type="hidden" name="library_id" value="{{ $library->id ?? '' }}">
-{{--                    <div class="form-group">--}}
-{{--                        <label for="file" class="form-label">Choose file</label>--}}
-{{--                        <input class="form-control" type="file" id="file" name="file">--}}
-{{--                    </div>--}}
-{{--                    <button type="submit" class="btn btn-primary">Upload</button>--}}
                 </form>
             </div>
         </div>
