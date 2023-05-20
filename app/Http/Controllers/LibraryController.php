@@ -15,9 +15,8 @@ class LibraryController extends Controller
 
     public function save(LibrarySaveRequest $request)
     {
-        $data = $request->only(['name', 'temperature', 'chunk_size']);
-        $library = empty($request->id) ? new Library() : Library::first();
-        $library->fill($data);
+        $library = Library::first();
+        $library->temperature = $request->temperature;
         $library->save();
 
         return redirect('/');
