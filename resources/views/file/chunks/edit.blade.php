@@ -33,7 +33,12 @@
                     @foreach($chunks['html'] as $key => $chunk)
                         <div class="d-flex">
                             <div class="d-flex flex-column w-100">
-                                <div class="d-flex flex-column">
+                                <div class="d-flex flex-column position-relative" id="textHolder{{$key}}">
+                                    <span class="d-flex ml-auto text-primary position-absolute" style="top: 8px; right: 8px;">
+                                        <button type="button" class="btn btn-link px-1 py-0 js_decrease-button" onclick="decreaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">a -</button>
+                                        /
+                                        <button type="button" class="btn btn-link px-1 py-0 js_increase-button" onclick="increaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">A +</button>
+                                    </span>
                                     <!--Quill editor-->
                                     <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
                                         <p>
@@ -130,15 +135,33 @@
         });
     })
 
-    const triggerTabList = document.querySelectorAll('#myTab button')
-    triggerTabList.forEach(triggerEl => {
-        const tabTrigger = new bootstrap.Tab(triggerEl)
+    const minFontValue = 10;
+    const maxFontValue = 24;
+    const fontValueChange = 1;
 
-        triggerEl.addEventListener('click', event => {
-            event.preventDefault()
-            tabTrigger.show()
-        })
-    })
+    function decreaseFontSize(target, parentEl) {
+        const targetTextarea = document.getElementById(parentEl).getElementsByClassName('ql-container')
+        let newTextareaFontValue = parseInt(getComputedStyle(targetTextarea[0]).fontSize) - fontValueChange
+
+        document.getElementById(parentEl).getElementsByClassName('js_increase-button')[0].removeAttribute('disabled')
+        targetTextarea[0].style.fontSize = newTextareaFontValue + 'px';
+
+        if (newTextareaFontValue <= minFontValue) {
+            target.setAttribute('disabled', 'disabled');
+        }
+    }
+
+    function increaseFontSize(target, parentEl) {
+        const targetTextarea = document.getElementById(parentEl).getElementsByClassName('ql-container')
+        let newTextareaFontValue = parseInt(getComputedStyle(targetTextarea[0]).fontSize) + fontValueChange
+
+        document.getElementById(parentEl).getElementsByClassName('js_decrease-button')[0].removeAttribute('disabled')
+        targetTextarea[0].style.fontSize = newTextareaFontValue + 'px';
+
+        if (newTextareaFontValue >= maxFontValue) {
+            target.setAttribute('disabled', 'disabled');
+        }
+    }
 </script>
 
 <script>
