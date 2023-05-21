@@ -25,7 +25,6 @@ final class AiModelResolver
     public function resolve(string $query): AiModel
     {
         $query = StripAiMapper::make($query)->handle()->getResult();
-        dd($query);
         switch ($this->slug) {
             case 'gpt-3.5-turbo':
                 return new Gpt35TurboAiModel($query);
