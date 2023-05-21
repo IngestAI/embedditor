@@ -74,7 +74,7 @@
             ...(qe.dataset.quill ? JSON.parse(qe.dataset.quill) : {}),
             modules: {
                 toolbar: [
-                    [{ 'background': ['#E7E6E6', "#e60000", "#008a00"] }]
+                    [{ 'background': ["transparent", "#e60000", "#008a00"] }]
                 ]
             },
             theme: "snow"
