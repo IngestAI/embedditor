@@ -143,19 +143,18 @@ class LibraryFile extends Model
         $embeddedFilePath = $this->getPathToSavingEmbeddedFile();
         $convertedFilePath = $this->getPathToSavingConvertedFile();
 
-        $filteredData = StripAiMapper::make($rawStorage->get($convertedFilePath))->handle()->getResult();
-        $chunks = $this->splitDataIntoChunks($filteredData);
+        $chunks = $this->splitDataIntoChunks($rawStorage->get($convertedFilePath));
         if (!empty($chunks)) {
             if (!$embeddedStorage->exists($embeddedFilePath)) {
                 $embeddedStorage->upload($embeddedFilePath, '');
             }
             $client = AiService::createEmbeddingFactory();
-            $texts = $vectors = [];
+            $html = $texts = $vectors = [];
             foreach ($chunks as $key => $chunk) {
-                $chunk = trim($chunk);
-                $texts[$key] = $chunk;
+                $texts[$key] = StripAiMapper::make($chunk)->handle()->getResult();
+                $html[$key] = $chunk;
                 try {
-                    $response = $client->send($chunk, $this->library->embedded_model);
+                    $response = $client->send($texts[$key], $this->library->embedded_model);
                     if (!empty($response)) {
                         $vectors[$key] = $response;
                     }
@@ -165,7 +164,7 @@ class LibraryFile extends Model
             }
             if (!empty($texts) && !empty($vectors)) {
                 $embeddedStorage->upload($embeddedFilePath, json_encode([
-                    'html' => $texts,
+                    'html' => $html,
                     'texts' => $texts,
                     'vectors' => $vectors,
                     // 'meta' => $meta TODO
