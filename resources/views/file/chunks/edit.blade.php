@@ -32,7 +32,7 @@
                 <div id="quill-area">
                     @foreach($chunks as $key => $chunk)
                         <div class="d-flex mb-4">
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column w-100">
                                 <!--Quill editor-->
                                 <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
                                     <p>
