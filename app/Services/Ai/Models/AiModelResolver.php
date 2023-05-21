@@ -2,6 +2,7 @@
 
 namespace App\Services\Ai\Models;
 
+use App\Services\Ai\Mappers\StripAiMapper;
 use App\Services\Converters\Handlers\ConverterHandler;
 use App\Services\Converters\Handlers\CsvConverterHandler;
 use App\Services\Converters\Handlers\PdfConverterHandler;
@@ -23,6 +24,7 @@ final class AiModelResolver
 
     public function resolve(string $query): AiModel
     {
+        $query = StripAiMapper::make($query)->handle()->getResult();
         switch ($this->slug) {
             case 'gpt-3.5-turbo':
                 return new Gpt35TurboAiModel($query);

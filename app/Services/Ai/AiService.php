@@ -2,6 +2,9 @@
 
 namespace App\Services\Ai;
 
+use App\Services\Ai\Chat\AiChat;
+use App\Services\Ai\Chat\NullAiChat;
+use App\Services\Ai\Chat\OpenAiChat;
 use App\Services\Ai\Completions\AiCompletion;
 use App\Services\Ai\Completions\NullAiCompletion;
 use App\Services\Ai\Completions\OpenAiCompletion;
@@ -31,5 +34,16 @@ class AiService
         }
 
         return new NullAiCompletion();
+    }
+
+    public static function createChatFactory(): AiChat
+    {
+        $type = config('services.ai.completion');
+
+        if  ($type === 'openai') {
+            return new OpenAiChat();
+        }
+
+        return new NullAiChat();
     }
 }
