@@ -93,14 +93,27 @@ class LibraryFile extends Model
         return $storage->get($convertedFilePath);
     }
 
+    private function _getFileType() : string
+    {
+        $fileType = explode('.', $this->original_name);
+        return strtolower(end($fileType));
+    }
+
     private function splitDataIntoChunks($fileData)
     {
         $chunks = [];
 
+        // CSV file with "chunk_separator"
+        if ($this->_getFileType() == 'csv') {
+            return $chunks = explode(PHP_EOL, $fileData);
+        }
+
+        // file with "chunk_separator"
         if (!empty($this->library->chunk_separator)) {
             return $chunks = explode($this->library->chunk_separator, $fileData);
         }
 
+        // simple file with "chunk_size"
         $parts = explode("\n", $fileData);
         $k = 0;
         foreach ($parts as $part) {
