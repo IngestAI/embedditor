@@ -38,10 +38,10 @@ class FileController extends Controller
         return response()->json(['result' => 1]);
     }
 
-    public function view(LibraryFile $libraryFile)
-    {
-        return response()->json(['result' => 1, 'name' => $libraryFile->original_name, 'content' => $libraryFile->getConvertedFile()]);
-    }
+//    public function view(LibraryFile $libraryFile)
+//    {
+//        return response()->json(['result' => 1, 'name' => $libraryFile->original_name, 'content' => $libraryFile->getConvertedFile()]);
+//    }
 
     public function chunks(LibraryFile $libraryFile)
     {

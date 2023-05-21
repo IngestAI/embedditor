@@ -14,11 +14,19 @@ class LibraryFile extends Model
 {
     use HasFactory;
 
+    public const STATUS_CHUNKED_OK = 1;
+    public const STATUS_CHUNKED_ERROR = 2;
+    public const STATUS_CHUNKED_PROCESSING = 3;
+
     const DISK_CORE_PATH = 'libraries';
     const DISK_SUB_PATH_RAW = 'raw';
     const DISK_SUB_PATH_DB = 'db';
 
     protected $fillable = ['library_id', 'original_name', 'file_key', 'filename'];
+
+    protected $casts = [
+        'chunked_list' => 'array'
+    ];
 
     public function library(): BelongsTo
     {
@@ -85,16 +93,15 @@ class LibraryFile extends Model
         return $storage->get($convertedFilePath);
     }
 
-    public function saveEmbeddedFile()
+    private function splitDataIntoChunks($fileData)
     {
-        $rawStorage = new UploadedStepService();
-        $embeddedStorage = new EmbeddedStepService();
-        $embeddedFilePath = $this->getPathToSavingEmbeddedFile();
-        $convertedFilePath = $this->getPathToSavingConvertedFile();
-
         $chunks = [];
 
-        $parts = explode("\n", $rawStorage->get($convertedFilePath));
+        if (!empty($this->library->chunk_separator)) {
+            return $chunks = explode($this->library->chunk_separator, $fileData);
+        }
+
+        $parts = explode("\n", $fileData);
         $k = 0;
         foreach ($parts as $part) {
             if (!empty($part)) {
@@ -111,6 +118,18 @@ class LibraryFile extends Model
                 }
             }
         }
+
+        return $chunks;
+    }
+
+    public function saveEmbeddedFile()
+    {
+        $rawStorage = new UploadedStepService();
+        $embeddedStorage = new EmbeddedStepService();
+        $embeddedFilePath = $this->getPathToSavingEmbeddedFile();
+        $convertedFilePath = $this->getPathToSavingConvertedFile();
+
+        $chunks = $this->splitDataIntoChunks($rawStorage->get($convertedFilePath));
         if (!empty($chunks)) {
             if (!$embeddedStorage->exists($embeddedFilePath)) {
                 $embeddedStorage->upload($embeddedFilePath, '');
@@ -130,7 +149,12 @@ class LibraryFile extends Model
                 }
             }
             if (!empty($texts) && !empty($vectors)) {
-                $embeddedStorage->upload($embeddedFilePath, json_encode(['texts' => $texts, 'vectors' => $vectors]));
+                $embeddedStorage->upload($embeddedFilePath, json_encode([
+                    'html' => $texts,
+                    'texts' => $texts,
+                    'vectors' => $vectors,
+                    // 'meta' => $meta TODO
+                ]));
             }
         }
 
@@ -159,7 +183,7 @@ class LibraryFile extends Model
             . '.txt';
     }
 
-    private function getPathToSavingEmbeddedFile() : string
+    public function getPathToSavingEmbeddedFile() : string
     {
         return self::DISK_CORE_PATH
             . '/'

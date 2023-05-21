@@ -2,7 +2,6 @@
 
 namespace App\Services\Ai\Embeddings;
 
-use App\Helpers\LogHelper;
 use Exception;
 use OpenAI;
 
