@@ -3,6 +3,14 @@
 
 @section('content')
 
+    <div class="container-fluid mb-3 mb-lg-5">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end">
+                <a class="btn btn-primary btn-lg" href="{{ route('web::playground::form') }}" role="button">Playground</a>
+            </div>
+        </div>
+    </div>
+
     <div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
