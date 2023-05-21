@@ -30,7 +30,7 @@
                 @method('put')
 
                 <div id="quill-area">
-                    @foreach($chunks as $key => $chunk)
+                    @foreach($chunks['html'] as $key => $chunk)
                         <div class="d-flex">
                             <div class="d-flex flex-column w-100">
                                 <div class="d-flex flex-column">
@@ -53,7 +53,10 @@
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
-                                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                                            @if(!empty($chunks['texts'][$key]))
+                                                <div >{!! $chunks['texts'][$key] !!}</div>
+                                            @endif
+{{--                                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.--}}
                                         </div>
                                     </div>
                                 </div>
