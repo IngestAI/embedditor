@@ -73,14 +73,6 @@ class ProviderModelSeeder extends Seeder
                 'input_format' => 'text',
                 'output_format' => 'text',
             ],
-            [
-                'provider_id' => $openaiProvider,
-                'slug' => 'dall-e',
-                'name' => 'DALL-E',
-                'active' => true,
-                'input_format' => 'text',
-                'output_format' => 'image',
-            ],
         ]);
     }
 }

@@ -26,7 +26,7 @@
                         </ul>
                     </div>
                 @endif
-                <form id="playground-form" class="needs-validation" novalidate="">
+                <form id="playground-form" method="POST" class="needs-validation" novalidate="">
                     <div class="form-group">
                         <label for="model">Model</label>
                         <select class="form-control" id="model">
