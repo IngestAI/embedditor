@@ -2,11 +2,15 @@
 
 
 @section('content')
-
     <div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                Edit Options
+                <span>Edit Options</span>
+                <span class="d-flex ml-auto text-primary">
+                    <button id="decreaseFontButton" type="button" class="btn btn-link px-1 py-0" onclick="decreaseFontSize(this)" style="text-decoration: none;">a -</button>
+                    /
+                    <button id="increaseFontButton" type="button" class="btn btn-link px-1 py-0" onclick="increaseFontSize(this)" style="text-decoration: none;">A +</button>
+                </span>
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -155,5 +159,31 @@
                 maxFilesize: 3
             });
         });
+
+        const html = document.documentElement;
+        const minFontValue = 10;
+        const maxFontValue = 24;
+        const fontValueChange = 2;
+        let documentFontValue = parseInt(getComputedStyle(html, '').fontSize);
+
+        function decreaseFontSize(el) {
+          document.getElementById('increaseFontButton').removeAttribute('disabled')
+          documentFontValue -= fontValueChange
+          html.style.fontSize = documentFontValue + 'px';
+
+          if (documentFontValue <= minFontValue) {
+            el.setAttribute('disabled', 'disabled')
+          }
+        }
+
+        function increaseFontSize(el) {
+          document.getElementById('decreaseFontButton').removeAttribute('disabled')
+          documentFontValue += fontValueChange
+          html.style.fontSize = documentFontValue + 'px';
+
+          if (documentFontValue >= maxFontValue) {
+            el.setAttribute('disabled', 'disabled')
+          }
+        }
     </script>
 @endsection
