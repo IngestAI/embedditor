@@ -3,6 +3,7 @@
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FileEditorController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\PlaygroundController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,4 +30,9 @@ Route::group(['prefix' => '/file'], function () {
 
     Route::get('/chunks/edit/{library_file}', [FileEditorController::class, 'chunksEdit'])->name('web::file::chunks::edit');
     Route::put('/chunks/edit/{library_file}', [FileEditorController::class, 'chunksUpdate'])->name('web::file::chunks::update');
+});
+
+Route::group(['prefix' => '/playground'], function () {
+    Route::get('/form', [PlaygroundController::class, 'index'])->name('web::playground::form');
+    Route::post('/send', [PlaygroundController::class, 'send'])->name('web::playground::send');
 });
