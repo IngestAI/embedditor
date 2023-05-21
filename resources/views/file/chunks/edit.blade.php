@@ -31,9 +31,9 @@
 
                 <div id="quill-area">
                     @foreach($chunks['html'] as $key => $chunk)
-                        <div class="d-flex">
+                        <div class="d-flex js_chunk-item">
                             <div class="d-flex flex-column w-100">
-                                <div class="d-flex flex-column position-relative" id="textHolder{{$key}}">
+                                <div class="d-flex flex-column position-relative js_text-holder" id="textHolder{{$key}}">
                                     <span class="d-flex ml-auto text-primary position-absolute" style="top: 8px; right: 8px;">
                                         <button type="button" class="btn btn-link px-1 py-0 js_decrease-button" onclick="decreaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">a -</button>
                                         /
@@ -45,35 +45,40 @@
                                             {!! $chunk !!}
                                         </p>
                                     </div>
-                                    <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
+                                    <textarea name="chunks[{{$key}}]" style="display:none"></textarea>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
-                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                        <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
                                             Show more
                                         </button>
-                                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#approveModal">
+                                        <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}"
+{{--                                                data-bs-toggle="modal" data-bs-target="#approveModal"--}}
+                                        >
                                             Join chunks
                                         </button>
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
-                                            @if(!empty($chunks['texts'][$key]))
-                                                <div >{!! $chunks['texts'][$key] !!}</div>
-                                            @endif
-{{--                                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.--}}
+
+                                            <div class="js_chunk-item-text">
+                                                @if(!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key]) && !empty($chunks['texts'][$key]))
+                                                    {!! $chunks['texts'][$key] !!}
+                                                @endif
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-start pt-3 pl-3">
-                                <input name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
+                                <input class="js_checkbox" name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
                                    @if(!empty($libraryFile->chunked_list))
                                        @if( isset($libraryFile->chunked_list[$key])) checked @endif
                                    @else
                                        checked
                                    @endif
-                                   id="checkChunk-{{$key}}"
+{{--                                   id="checkChunk-{{$key}}"--}}
                                 >
                             </div>
                         </div>
@@ -86,25 +91,25 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title h4" id="approveModalLabel">Join chunks</h1>
-                <button type="button" class="btn btn-link text-secondary p-0" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="bi bi-x h3"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                Do you really want to join chunks?
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Join</button>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">--}}
+{{--    <div class="modal-dialog">--}}
+{{--        <div class="modal-content">--}}
+{{--            <div class="modal-header">--}}
+{{--                <h1 class="modal-title h4" id="approveModalLabel">Join chunks</h1>--}}
+{{--                <button type="button" class="btn btn-link text-secondary p-0" data-bs-dismiss="modal" aria-label="Close">--}}
+{{--                    <i class="bi bi-x h3"></i>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--            <div class="modal-body">--}}
+{{--                Do you really want to join chunks?--}}
+{{--            </div>--}}
+{{--            <div class="modal-footer d-flex justify-content-center">--}}
+{{--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
+{{--                <button type="button" class="btn btn-primary">Join</button>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 @endsection
 
@@ -131,7 +136,7 @@
     $("#chunks-form").on("submit",function(event) {
         $chunks = $('#quill-area .ql-editor');
         $.each($chunks, function (index, value) {
-            $("#hidden-chunk-" + index).html($(value).html());
+            $(value).parent().parent().find('textarea').html($(value).html());
         });
     })
 
@@ -162,6 +167,43 @@
             target.setAttribute('disabled', 'disabled');
         }
     }
+</script>
+
+<script>
+    $(".js_join-chunks").on("click",function(event) {
+
+        // chunk
+        var clickedChunkIdToJoin = $(event.currentTarget).data('chunk-key')
+        $chunk = $(event.currentTarget).parents('.js_chunk-item');
+
+        // chunk data
+        $chunkEditor = $chunk.find('.ql-editor');
+        $chunkData = $chunkEditor.html();
+        $chunkEditorShowMore = $chunk.find('.js_chunk-item-text');
+        $chunkText = $chunkEditorShowMore.text();
+
+        // next chunk
+        $nextChunk = $chunk.next();
+
+        // next chunk data
+        $nextChunkData = $nextChunk.find('.ql-editor').html();
+        $nextChunkText = $nextChunk.find('.js_chunk-item-text').text();
+
+        if ($nextChunkData == undefined) {
+            return;
+        }
+
+        // merge data
+        mergedData = $chunkData + '<br>' + $nextChunkData;
+        mergedText = $chunkText + ' ' + $nextChunkText;
+
+        // insert data
+        $chunkEditor.html(mergedData);
+        $chunkEditorShowMore.text(mergedText);
+
+        // delete next next chunk
+        $nextChunk.remove();
+    })
 </script>
 
 <script>
