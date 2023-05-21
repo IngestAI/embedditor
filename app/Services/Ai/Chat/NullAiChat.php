@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Ai\Completions;
+namespace App\Services\Ai\Chat;
 
-class NullAiCompletion implements AiCompletion
+class NullAiChat implements AiChat
 {
     public function send(array $data): mixed
     {
