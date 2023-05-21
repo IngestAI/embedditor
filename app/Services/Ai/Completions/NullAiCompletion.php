@@ -4,7 +4,7 @@ namespace App\Services\Ai\Completions;
 
 class NullAiCompletion implements AiCompletion
 {
-    public function send(string $prompt, string $model, int $maxTokens, float $temperature): mixed
+    public function send(array $data): mixed
     {
         return [];
     }
