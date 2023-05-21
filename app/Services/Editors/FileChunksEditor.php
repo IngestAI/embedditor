@@ -10,15 +10,21 @@ class FileChunksEditor extends BaseFileChunks
     {
         $embeddedFilePath = $libraryFile->getPathToSavingEmbeddedFile();
 
-        $embeddedFileHtml = '';
+        $embeddedFileHtml = [];
         if ($this->embeddedStorageService->exists($embeddedFilePath)) {
             $embeddedFile = json_decode($this->embeddedStorageService->get($embeddedFilePath));
+
             if (!empty($embeddedFile->html)) {
-                $embeddedFileHtml = str_replace("\n", '<br>', $embeddedFile->html);
+                foreach ($embeddedFile->html as $value) {
+                    $embeddedFileHtml[] = str_replace(PHP_EOL, '<br>', $value);
+                }
             }
         }
 
-        return $embeddedFileHtml;
+        return [
+            'html' => $embeddedFileHtml,
+            'texts' => $embeddedFile->texts,
+        ];
     }
 
     public function updateItemChunked(LibraryFile $libraryFile, $aFileData)
