@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Ai\AiService;
+use App\Services\Ai\Mappers\StripAiMapper;
 use App\Services\Converters\ConverterResolver;
 use App\Services\Storage\Adapters\EmbeddedStepService;
 use App\Services\Storage\Adapters\UploadedStepService;
@@ -142,7 +143,8 @@ class LibraryFile extends Model
         $embeddedFilePath = $this->getPathToSavingEmbeddedFile();
         $convertedFilePath = $this->getPathToSavingConvertedFile();
 
-        $chunks = $this->splitDataIntoChunks($rawStorage->get($convertedFilePath));
+        $filteredData = StripAiMapper::make($rawStorage->get($convertedFilePath))->handle()->getResult();
+        $chunks = $this->splitDataIntoChunks($filteredData);
         if (!empty($chunks)) {
             if (!$embeddedStorage->exists($embeddedFilePath)) {
                 $embeddedStorage->upload($embeddedFilePath, '');
