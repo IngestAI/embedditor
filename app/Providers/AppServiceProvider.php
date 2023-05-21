@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if ($this->app->environment('production')
+            || $this->app->environment('dev')
+            || $this->app->environment('stage')
+        ) {
+            $this->app['request']->server->set('HTTPS', 'on');
+        }
     }
 }
