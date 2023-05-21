@@ -34,7 +34,6 @@
                     </div>
                     <div class="form-group">
                         <label for="temperature">Chunk Separator (optional value: e.g. ===)</label>
-                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
                         <input type="text" class="form-control" id="chunk-separator" name="chunk_separator" placeholder="" value="{!!old('chunk_separator', $library->chunk_separator ?? '')!!}">
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
