@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\PlaygroundController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,5 +26,10 @@ Route::group(['prefix' => '/file'], function () {
     Route::get('/view/{library_file}', [FileController::class, 'view'])->name('web::file::view');
     Route::get('/delete/{library_file}', [FileController::class, 'delete'])->name('web::file::delete');
     Route::get('/chunks/{library_file}', [FileController::class, 'chunks'])->name('web::file::chunks');
+});
+
+Route::group(['prefix' => '/playground'], function () {
+    Route::get('/form', [PlaygroundController::class, 'index'])->name('web::playground::form');
+    Route::post('/send', [PlaygroundController::class, 'send'])->name('web::playground::send');
 });
 
