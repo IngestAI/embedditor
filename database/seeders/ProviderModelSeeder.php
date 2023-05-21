@@ -16,6 +16,10 @@ class ProviderModelSeeder extends Seeder
 
         $openaiProvider = $providers['openai'] ?? null;
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('provider_models')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
         DB::table('provider_models')->insert([
             [
                 'provider_id' => $openaiProvider,
