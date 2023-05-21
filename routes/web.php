@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FileEditorController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,7 @@ Route::group(['prefix' => '/file'], function () {
     Route::get('/view/{library_file}', [FileController::class, 'view'])->name('web::file::view');
     Route::get('/delete/{library_file}', [FileController::class, 'delete'])->name('web::file::delete');
     Route::get('/chunks/{library_file}', [FileController::class, 'chunks'])->name('web::file::chunks');
-});
 
+    Route::get('/chunks/edit/{library_file}', [FileEditorController::class, 'chunksEdit'])->name('web::file::chunks::edit');
+    Route::put('/chunks/edit/{library_file}', [FileEditorController::class, 'chunksUpdate'])->name('web::file::chunks::update');
+});

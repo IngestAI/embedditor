@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
+    @yield('css')
 </head>
 <body class="d-flex flex-column h-100">
 <div id="app" class="d-flex flex-column h-100">
@@ -41,6 +42,7 @@
 </div>
 <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
 @yield('js')
 </body>
 </html>

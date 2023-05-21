@@ -17,6 +17,7 @@ class LibraryController extends Controller
     {
         $library = Library::first();
         $library->temperature = $request->temperature;
+        $library->chunk_separator = $request->chunk_separator ?? null;
         $library->save();
 
         return redirect('/');

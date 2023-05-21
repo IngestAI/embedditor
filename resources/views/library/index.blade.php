@@ -24,6 +24,11 @@
                         <label for="temperature">Creativity</label>
                         <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
                     </div>
+                    <div class="form-group">
+                        <label for="temperature">Chunk Separator (optional value: e.g. ===)</label>
+                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
+                        <input type="text" class="form-control" id="chunk-separator" name="chunk_separator" placeholder="" value="{!!old('chunk_separator', $library->chunk_separator ?? '')!!}">
+                    </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
@@ -102,10 +107,10 @@
 
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="{{ route('web::file::chunks', ['library_file' => $file->id]) }}" class="file-chunk" data-id="" data-tippy-content="Chunks"><i class="bi bi-pencil h5 text-dark"></i></a>
+                                    <a href="{{ route('web::file::chunks::edit', ['library_file' => $file->id]) }}" class="file-chunk" data-id="" data-tippy-content="Chunks"><i class="bi bi-pencil h5 text-dark"></i></a>
                                     <span class="border-start mx-2 d-block height-20"></span>
-                                    <a href="javascript:void(0);" class="file-show" data-id="{{ $file->id }}" data-tippy-content="Show Raw Content" data-toggle="modal" data-target="#viewModal"><i class="bi bi-search h5 text-dark"></i></a>
-                                    <span class="border-start mx-2 d-block height-20"></span>
+{{--                                    <a href="javascript:void(0);" class="file-show" data-id="{{ $file->id }}" data-tippy-content="Show Raw Content" data-toggle="modal" data-target="#viewModal"><i class="bi bi-search h5 text-dark"></i></a>--}}
+{{--                                    <span class="border-start mx-2 d-block height-20"></span>--}}
                                     <a href="javascript:void(0);" class="file-delete" data-id="{{ $file->id }}" data-tippy-content="Delete File" data-toggle="modal" data-target="#deleteModal">
                                         <i class="bi bi-trash h5 text-dark"></i>
                                     </a>
@@ -184,22 +189,22 @@
                 }
             });
 
-            $('.file-show').click(function() {
-                $('#viewModal').modal('show');
-                $('#viewContentLoader').show();
-                $('#viewContent').html('');
-                $('#viewLabel').html('');
-                const id = $(this).data('id');
-                $.getJSON(`/file/view/${id}`, function(j) {
-                    if (j.result === 1) {
-                        $('#viewContentLoader').hide();
-                        $('#viewContent').html(j.content);
-                        $('#viewLabel').html(j.name);
-                    } else {
-                        alert('An error occured while loading the file!');
-                    }
-                });
-            });
+            // $('.file-show').click(function() {
+            //     $('#viewModal').modal('show');
+            //     $('#viewContentLoader').show();
+            //     $('#viewContent').html('');
+            //     $('#viewLabel').html('');
+            //     const id = $(this).data('id');
+            //     $.getJSON(`/file/view/${id}`, function(j) {
+            //         if (j.result === 1) {
+            //             $('#viewContentLoader').hide();
+            //             $('#viewContent').html(j.content);
+            //             $('#viewLabel').html(j.name);
+            //         } else {
+            //             alert('An error occured while loading the file!');
+            //         }
+            //     });
+            // });
 
             $('.file-delete').click(function (event) {
                 const id = $(this).data('id');
