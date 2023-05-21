@@ -32,7 +32,7 @@
                 <div id="quill-area">
                     @foreach($chunks as $key => $chunk)
                         <div class="d-flex mb-4">
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column w-100">
                                 <!--Quill editor-->
                                 <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
                                     <p>
@@ -66,7 +66,6 @@
 
     <!-- Include the Quill library -->
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-{{--    <script src="{{ asset('js/bootstrap.min.js') }}"></script>--}}
 
 <script>
     var initQuill = document.querySelectorAll("[data-quill]");
@@ -75,7 +74,7 @@
             ...(qe.dataset.quill ? JSON.parse(qe.dataset.quill) : {}),
             modules: {
                 toolbar: [
-                    [{ 'background': ['#E7E6E6', "#e60000", "#008a00"] }]
+                    [{ 'background': ["transparent", "#e60000", "#008a00"] }]
                 ]
             },
             theme: "snow"
