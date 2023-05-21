@@ -18,74 +18,44 @@
 
 @section('content')
 
-<a class="btn btn-primary" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+<a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+<div class="mb-3 mb-lg-5">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Edit file by chunks</h5>
+        </div>
+        <div class="card-body">
+            <form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
+                @csrf
+                @method('put')
 
-<div class="content pt-3 px-3 px-lg-6 d-flex flex-column-fluid">
-    <div class="container-fluid px-0">
-        <div class="row">
-            <div class="col-12 mb-3 mb-lg-5">
-                <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Edit file by chunks</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
-                            @csrf
-                            @method('put')
-
-                            <div id="quill-area">
-
-                                @foreach($chunks as $key => $chunk)
-
-                                    <div class="row">
-
-                                        <div class="col-11">
-
-                                            <!--//Page content//-->
-                                            <div class="content pt-3 px-3 px-lg-6 mb-4">
-                                                <div class="container-fluid px-0" >
-                                                    <!--Quill editor-->
-                                                    <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
-                                                        <p>
-                                                            {!! $chunk !!}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--//Page content End//-->
-
-                                            <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
-                                        </div>
-                                        <div class="col-1">
-                                            <br>
-                                            <div class="form-check">
-                                                <input name="chunked_list[{{$key}}]" class="form-check-input" type="checkbox" value="{{$key}}"
-                                                    @if(!empty($libraryFile->chunked_list))
-                                                        @if( isset($libraryFile->chunked_list[$key])) checked @endif
-                                                    @else
-                                                        checked
-                                                    @endif
-                                                       id="checkChunk-{{$key}}">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                @endforeach
-
+                <div id="quill-area">
+                    @foreach($chunks as $key => $chunk)
+                        <div class="d-flex mb-4">
+                            <div class="d-flex flex-column">
+                                <!--Quill editor-->
+                                <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
+                                    <p>
+                                        {!! $chunk !!}
+                                    </p>
+                                </div>
+                                <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
                             </div>
-
-                            <input class="btn btn-success" type="submit" value="Save" />
-
-                        </form>
-
-                    </div>
-
-                    <div class="card-footer align-items-center d-flex justify-content-between"></div>
-
+                            <div class="d-flex align-items-start pt-3 pl-3">
+                                <input name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
+                                   @if(!empty($libraryFile->chunked_list))
+                                       @if( isset($libraryFile->chunked_list[$key])) checked @endif
+                                   @else
+                                       checked
+                                   @endif
+                                   id="checkChunk-{{$key}}"
+                                >
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-
+                <input class="btn btn-success" type="submit" value="Save" />
+            </form>
         </div>
     </div>
 </div>
