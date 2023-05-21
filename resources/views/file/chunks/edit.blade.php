@@ -31,15 +31,32 @@
 
                 <div id="quill-area">
                     @foreach($chunks as $key => $chunk)
-                        <div class="d-flex mb-4">
+                        <div class="d-flex">
                             <div class="d-flex flex-column w-100">
-                                <!--Quill editor-->
-                                <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
-                                    <p>
-                                        {!! $chunk !!}
-                                    </p>
+                                <div class="d-flex flex-column">
+                                    <!--Quill editor-->
+                                    <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
+                                        <p>
+                                            {!! $chunk !!}
+                                        </p>
+                                    </div>
+                                    <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
                                 </div>
-                                <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
+                                <div class="mb-3">
+                                    <div class="w-100 text-center">
+                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                            Show more
+                                        </button>
+                                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#approveModal">
+                                            Join chunks
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="collapse{{$key}}">
+                                        <div class="card card-body rounded-0">
+                                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-flex align-items-start pt-3 pl-3">
                                 <input name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
@@ -56,6 +73,27 @@
                 </div>
                 <input class="btn btn-success" type="submit" value="Save" />
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title h4" id="approveModalLabel">Join chunks</h1>
+                <button type="button" class="btn btn-link text-secondary p-0" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x h3"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Do you really want to join chunks?
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Join</button>
+            </div>
         </div>
     </div>
 </div>
@@ -88,6 +126,16 @@
         $.each($chunks, function (index, value) {
             $("#hidden-chunk-" + index).html($(value).html());
         });
+    })
+
+    const triggerTabList = document.querySelectorAll('#myTab button')
+    triggerTabList.forEach(triggerEl => {
+        const tabTrigger = new bootstrap.Tab(triggerEl)
+
+        triggerEl.addEventListener('click', event => {
+            event.preventDefault()
+            tabTrigger.show()
+        })
     })
 </script>
 
