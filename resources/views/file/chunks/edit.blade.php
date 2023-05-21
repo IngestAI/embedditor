@@ -66,7 +66,6 @@
 
     <!-- Include the Quill library -->
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-{{--    <script src="{{ asset('js/bootstrap.min.js') }}"></script>--}}
 
 <script>
     var initQuill = document.querySelectorAll("[data-quill]");
