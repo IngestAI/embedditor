@@ -1183,9 +1183,9 @@ class StripAiMapper implements AiMapper
 
     public function handle(): AiMapper
     {
-        $result = mb_strtolower(preg_replace('/[\W]+/', ' ', $this->rawData));
-
         $stopWords = array_map(fn($item) => ' ' . $item . ' ', self::STOP_WORDS);
+
+        $result = mb_strtolower(preg_replace('/(?![!,])[[:punct:]]/', ' ', $this->rawData));
         $result = str_replace($stopWords, ' ', $result);
         $this->result = preg_replace('/[ ]{2,}/', ' ', $result);
 
