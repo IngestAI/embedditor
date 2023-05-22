@@ -44,7 +44,7 @@
                     <div class="col-12 col-md-4">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
-                            <label class="form-check-label" for="strip_special_char">Strip special_chars</label>
+                            <label class="form-check-label" for="strip_special_char">Strip special chars</label>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
