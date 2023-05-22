@@ -38,10 +38,10 @@ class FileChunksEditor extends BaseFileChunks
 
     /**
      * @param array $requestChunks
-     * @param array $requestChunkedList
+     * @param array|null $requestChunkedList
      * @return array[]
      */
-    public function reorderDataKeys(array $requestChunks, array $requestChunkedList) : array
+    public function reorderDataKeys(array $requestChunks, ?array $requestChunkedList) : array
     {
         $chunks = $chunkedList = [];
         $currentKey = 0;

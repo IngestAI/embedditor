@@ -71,9 +71,7 @@
                                         @endif
 
                                         @if($key < count($chunks['html']) - 1)
-                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}"
-                                                {{--                                                data-bs-toggle="modal" data-bs-target="#approveModal"--}}
-                                            >Join chunks</button>
+                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">Join chunks</button>
                                         @endif
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
@@ -96,7 +94,6 @@
                                    @else
                                        checked
                                    @endif
-{{--                                   id="checkChunk-{{$key}}"--}}
                                 >
                             </div>
                         </div>
@@ -107,27 +104,6 @@
         </div>
     </div>
 </form>
-
-<!-- Modal -->
-{{--<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">--}}
-{{--    <div class="modal-dialog">--}}
-{{--        <div class="modal-content">--}}
-{{--            <div class="modal-header">--}}
-{{--                <h1 class="modal-title h4" id="approveModalLabel">Join chunks</h1>--}}
-{{--                <button type="button" class="btn btn-link text-secondary p-0" data-bs-dismiss="modal" aria-label="Close">--}}
-{{--                    <i class="bi bi-x h3"></i>--}}
-{{--                </button>--}}
-{{--            </div>--}}
-{{--            <div class="modal-body">--}}
-{{--                Do you really want to join chunks?--}}
-{{--            </div>--}}
-{{--            <div class="modal-footer d-flex justify-content-center">--}}
-{{--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
-{{--                <button type="button" class="btn btn-primary">Join</button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 
 @endsection
 
@@ -190,37 +166,50 @@
 <script>
     $(".js_join-chunks").on("click",function(event) {
 
-        // chunk
-        var clickedChunkIdToJoin = $(event.currentTarget).data('chunk-key')
-        $chunk = $(event.currentTarget).parents('.js_chunk-item');
+        Swal.fire({
+            title: "Join chunks",
+            text: "Do you really want to join chunks?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Join',
+            denyButtonText: `Cancel`,
 
-        // chunk data
-        $chunkEditor = $chunk.find('.ql-editor');
-        $chunkData = $chunkEditor.html();
-        $chunkEditorShowMore = $chunk.find('.js_chunk-item-text');
-        $chunkText = $chunkEditorShowMore.text();
+        }).then(function(result) {
 
-        // next chunk
-        $nextChunk = $chunk.next();
+            if (!result.isConfirmed) return;
 
-        // next chunk data
-        $nextChunkData = $nextChunk.find('.ql-editor').html();
-        $nextChunkText = $nextChunk.find('.js_chunk-item-text').text();
+            // chunk
+            var clickedChunkIdToJoin = $(event.currentTarget).data('chunk-key')
+            $chunk = $(event.currentTarget).parents('.js_chunk-item');
 
-        if ($nextChunkData == undefined) {
-            return;
-        }
+            // chunk data
+            $chunkEditor = $chunk.find('.ql-editor');
+            $chunkData = $chunkEditor.html();
+            $chunkEditorShowMore = $chunk.find('.js_chunk-item-text');
+            $chunkText = $chunkEditorShowMore.text();
 
-        // merge data
-        mergedData = $chunkData + '<br>' + $nextChunkData;
-        mergedText = $chunkText + ' ' + $nextChunkText;
+            // next chunk
+            $nextChunk = $chunk.next();
 
-        // insert data
-        $chunkEditor.html(mergedData);
-        $chunkEditorShowMore.text(mergedText);
+            // next chunk data
+            $nextChunkData = $nextChunk.find('.ql-editor').html();
+            $nextChunkText = $nextChunk.find('.js_chunk-item-text').text();
 
-        // delete next chunk
-        $nextChunk.remove();
+            if ($nextChunkData == undefined) {
+                return;
+            }
+
+            // merge data
+            mergedData = $chunkData + '<br>' + $nextChunkData;
+            mergedText = $chunkText + ' ' + $nextChunkText;
+
+            // insert data
+            $chunkEditor.html(mergedData);
+            $chunkEditorShowMore.text(mergedText);
+
+            // delete next chunk
+            $nextChunk.remove();
+        })
     })
 </script>
 
