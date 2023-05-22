@@ -59,10 +59,8 @@ class FileEditorController extends Controller
     {
         $data = $this->fileChunksEditorService->reorderDataKeys($request->chunks, $request->chunked_list);
 
-        $chunkSeparator = $libraryFile->library->chunk_separator;
-        if ($chunkSeparator) {
-            $data = $this->fileChunksEditorService->splitDataBySeparator($data, $chunkSeparator);
-        }
+        $chunkSeparator = $libraryFile->library->chunk_separator ?? LibraryFile::DEFAULT_CHUNK_SEPARATOR;
+        $data = $this->fileChunksEditorService->splitDataBySeparator($data, $chunkSeparator);
 
         $libraryFile->stop_word = (bool) ($request->stop_word ?? false);
         $libraryFile->lowercase = (bool) ($request->lowercase ?? false);

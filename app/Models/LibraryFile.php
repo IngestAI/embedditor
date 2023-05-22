@@ -15,6 +15,8 @@ class LibraryFile extends Model
 {
     use HasFactory;
 
+    const DEFAULT_CHUNK_SEPARATOR = '=====';
+
     public const STATUS_CHUNKED_OK = 1;
     public const STATUS_CHUNKED_ERROR = 2;
     public const STATUS_CHUNKED_PROCESSING = 3;
@@ -114,6 +116,8 @@ class LibraryFile extends Model
             return $chunks = explode($this->library->chunk_separator, $fileData);
         }
 
+        $chunkSize = $this->library->chunk_size;
+
         // simple file with "chunk_size"
         $parts = explode("\n", $fileData);
         $k = 0;
@@ -127,7 +131,7 @@ class LibraryFile extends Model
                 } else {
                     $chunks[$k] .= $part;
                 }
-                if (strlen($chunks[$k]) > $this->library->chunk_size) {
+                if (strlen($chunks[$k]) > $chunkSize) {
                     $k++;
                 }
             }
