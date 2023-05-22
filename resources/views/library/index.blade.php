@@ -1,16 +1,10 @@
 @extends('layouts.app')
 
+@section('button')
+    <a class="btn btn-primary" href="{{ route('web::playground::form') }}" role="button">Playground</a>
+@endsection
 
 @section('content')
-
-    <div class="container-fluid mb-3 mb-lg-5">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-end">
-                <a class="btn btn-primary btn-lg" href="{{ route('web::playground::form') }}" role="button">Playground</a>
-            </div>
-        </div>
-    </div>
-
     <div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
@@ -28,14 +22,20 @@
                 @endif
                 <form id="library-form" action="{{ route('web::library::save') }}" method="POST" class="needs-validation" novalidate="">
                     @csrf
-                    <div class="form-group">
-                        <label for="temperature">Creativity</label>
-                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="temperature">Chunk Separator (optional value: e.g. ===)</label>
-                        <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
-                        <input type="text" class="form-control" id="chunk-separator" name="chunk_separator" placeholder="" value="{!!old('chunk_separator', $library->chunk_separator ?? '')!!}">
+                    <div class="row">
+                        <div class="col-12 col-md-6 form-group">
+                            <div>
+                                <label for="temperature">Chunk Separator (optional value: e.g. ===)</label>
+                            </div>
+                            <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
+                            <input type="text" class="form-control" id="chunk-separator" name="chunk_separator" placeholder="" value="{!!old('chunk_separator', $library->chunk_separator ?? '')!!}">
+                        </div>
+                        <div class="col-12 col-md-6 form-group">
+                            <div>
+                                <label for="temperature">Creativity</label>
+                            </div>
+                            <input type="range" class="form-range" min="0.05" max="1" step="0.05" id="temperature" name="temperature" value="{{ $library->temperature ?? '0.5' }}">
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
@@ -83,7 +83,7 @@
                             <th class="text-center">Read</th>
                             <th class="text-center">Analyzed</th>
 
-                            <th class="text-end">Options</th>
+                            <th class="text-right">Options</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -113,8 +113,8 @@
                                 @endif
                             </td>
 
-                            <td>
-                                <div class="d-flex align-items-center">
+                            <td class="text-right">
+                                <div class="d-flex align-items-center justify-content-end">
                                     <a href="{{ route('web::file::chunks::edit', ['library_file' => $file->id]) }}" class="file-chunk" data-id="" data-tippy-content="Chunks"><i class="bi bi-pencil h5 text-dark"></i></a>
                                     <span class="border-start mx-2 d-block height-20"></span>
 {{--                                    <a href="javascript:void(0);" class="file-show" data-id="{{ $file->id }}" data-tippy-content="Show Raw Content" data-toggle="modal" data-target="#viewModal"><i class="bi bi-search h5 text-dark"></i></a>--}}
