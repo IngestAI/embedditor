@@ -209,6 +209,8 @@
 
             // delete next chunk
             $nextChunk.remove();
+
+            $('.js_chunk-item').last().find('.js_join-chunks').hide();
         })
     })
 </script>
