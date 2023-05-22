@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
-                                        @if(!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key]))
+                                        @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
                                             <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
                                                 Show more
                                             </button>
@@ -66,7 +66,7 @@
                                         <div class="card card-body rounded-0">
 
                                             <div class="js_chunk-item-text">
-                                                @if(!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key]) && !empty($chunks['texts'][$key]))
+                                                @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
                                                     {!! $chunks['texts'][$key] !!}
                                                 @endif
                                             </div>
