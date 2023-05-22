@@ -64,6 +64,9 @@ class FileEditorController extends Controller
 
         $libraryFile->stop_word = (bool) ($request->stop_word ?? false);
         $libraryFile->lowercase = (bool) ($request->lowercase ?? false);
+        $libraryFile->strip_tag = (bool) ($request->strip_tag ?? false);
+        $libraryFile->strip_punctuation = (bool) ($request->strip_punctuation ?? false);
+        $libraryFile->strip_special_char = (bool) ($request->strip_special_char ?? false);
         $libraryFile->chunked_list = $data['chunkedList'];
         $libraryFile->save();
 
