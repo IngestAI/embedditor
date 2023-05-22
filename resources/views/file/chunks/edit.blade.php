@@ -18,17 +18,31 @@
 
 @section('content')
 
-<a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
-<div class="mb-3 mb-lg-5">
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Edit file by chunks</h5>
-        </div>
-        <div class="card-body">
-            <form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
-                @csrf
-                @method('put')
+<form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
+    @csrf
+    @method('put')
 
+    <a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+
+    <div class="mb-3">
+        <div class="card-body">
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
+                <label class="form-check-label" for="lowercase">Apply lowercase</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
+                <label class="form-check-label" for="lowercase">Use stop words</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 mb-lg-5">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Edit file by chunks</h5>
+            </div>
+            <div class="card-body">
                 <div id="quill-area">
                     @foreach($chunks['html'] as $key => $chunk)
                         <div class="d-flex js_chunk-item">
@@ -89,9 +103,9 @@
                     @endforeach
                 </div>
                 <input class="btn btn-success" type="submit" value="Save" />
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <!-- Modal -->
