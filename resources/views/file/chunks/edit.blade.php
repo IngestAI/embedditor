@@ -49,14 +49,18 @@
                                 </div>
                                 <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
-                                        <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                            Show more
-                                        </button>
-                                        <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}"
-{{--                                                data-bs-toggle="modal" data-bs-target="#approveModal"--}}
-                                        >
-                                            Join chunks
-                                        </button>
+                                        @if(!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key]))
+                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                                Show more
+                                            </button>
+                                        @else
+                                        @endif
+
+                                        @if($key < count($chunks['html']) - 1)
+                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}"
+                                                {{--                                                data-bs-toggle="modal" data-bs-target="#approveModal"--}}
+                                            >Join chunks</button>
+                                        @endif
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
