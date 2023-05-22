@@ -25,7 +25,7 @@ class LibraryFile extends Model
     const DISK_SUB_PATH_RAW = 'raw';
     const DISK_SUB_PATH_DB = 'db';
 
-    protected $fillable = ['library_id', 'original_name', 'file_key', 'filename'];
+    protected $fillable = ['library_id', 'original_name', 'file_key', 'filename', 'strip_tag', 'strip_punctuation', 'strip_special_char'];
 
     protected $casts = [
         'chunked_list' => 'array'
@@ -154,8 +154,9 @@ class LibraryFile extends Model
             }
             $client = AiService::createEmbeddingFactory();
             $html = $texts = $vectors = [];
+            $libraryFile = self::find($this->id);
             foreach ($chunks as $key => $chunk) {
-                $texts[$key] = EmbeddingEditorFilterChain::make($chunk, $this)->handle();
+                $texts[$key] = EmbeddingEditorFilterChain::make($chunk, $libraryFile)->handle();
                 $html[$key] = $chunk;
                 $vectors[$key] = [];
 
