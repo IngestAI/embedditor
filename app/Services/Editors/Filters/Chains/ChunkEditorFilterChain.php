@@ -2,6 +2,7 @@
 
 namespace App\Services\Editors\Filters\Chains;
 
+use App\Models\LibraryFile;
 use App\Services\Editors\Filters\LowerCaseEditorFilter;
 use App\Services\Editors\Filters\StopWordEditorFilter;
 use App\Services\Editors\Filters\StripPunctEditorFilter;
@@ -12,18 +13,21 @@ class ChunkEditorFilterChain implements EditorFilterChain
 {
     private string $rawData;
 
-    private boolean $isLowerCase = false;
+    private bool $isLowerCase = false;
 
-    private boolean $isStopWords = false;
+    private bool $isStopWords = false;
 
-    public function __construct(string $rawData)
+    public function __construct(string $rawData, LibraryFile $libraryFile)
     {
         $this->rawData = $rawData;
+
+        $this->isLowerCase = $libraryFile->lowercase;
+        $this->isStopWords = $libraryFile->stop_word;
     }
 
-    public static function make(string $rawData)
+    public static function make(string $rawData, LibraryFile $libraryFile)
     {
-        return new static($rawData);
+        return new static($rawData, $libraryFile);
     }
 
     public function handle(): string

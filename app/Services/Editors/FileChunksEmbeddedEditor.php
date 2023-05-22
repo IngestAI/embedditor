@@ -35,7 +35,7 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
             }
 
             // 2. Filter chunk content by colors
-            $texts[$key] = ChunkEditorFilterChain::make(self::prepareCustomChunk($chunk))->handle();
+            $texts[$key] = ChunkEditorFilterChain::make(self::prepareCustomChunk($chunk), $libraryFile)->handle();
 
             if (empty($texts[$key])) {
                 $vectors[] = [];

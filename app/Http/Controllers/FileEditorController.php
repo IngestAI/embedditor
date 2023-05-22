@@ -67,6 +67,8 @@ class FileEditorController extends Controller
             $currentKey++;
         }
 
+        $libraryFile->stop_word = (bool) ($request->stop_word ?? false);
+        $libraryFile->lowercase = (bool) ($request->lowercase ?? false);
         $libraryFile->chunked_list = $chunkedList;
         $libraryFile->save();
 
