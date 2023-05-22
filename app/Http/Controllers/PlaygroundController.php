@@ -9,6 +9,7 @@ use App\Services\Ai\Models\AiModelResolver;
 use App\Services\Ai\Models\Gpt35TurboAiModel;
 use App\Services\Ai\Models\Gpt4AiModel;
 use App\Services\Ai\Models\NullAiModel;
+use App\Services\Editors\Filters\Chains\PlaygroundEditorFilterChain;
 
 class PlaygroundController extends Controller
 {
@@ -29,7 +30,8 @@ class PlaygroundController extends Controller
         $query = $request->q;
         $providerModel = $request->provider_model;
 
-        $aiModel = AiModelResolver::make($providerModel->slug)->resolve($query);
+        $filteredQuery = PlaygroundEditorFilterChain::make($query)->handle();
+        $aiModel = AiModelResolver::make($providerModel->slug)->resolve($filteredQuery);
         if ($aiModel instanceof NullAiModel) {
             return response()->json(['result' => 2, 'answer' => 'Error: This model is not available yet']);
         }

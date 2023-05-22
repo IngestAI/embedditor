@@ -2,10 +2,9 @@
 
 namespace App\Services\Editors;
 
-use App\Http\Helpers\EmbedHelper;
 use App\Models\LibraryFile;
 use App\Services\Ai\AiService;
-use App\Services\Ai\Mappers\StripAiMapper;
+use App\Services\Editors\Filters\Chains\ChunkEditorFilterChain;
 use Log;
 
 class FileChunksEmbeddedEditor extends BaseFileChunks
@@ -36,7 +35,7 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
             }
 
             // 2. Filter chunk content by colors
-            $texts[$key] = StripAiMapper::make(self::prepareCustomChunk($chunk))->handle()->getResult();
+            $texts[$key] = ChunkEditorFilterChain::make(self::prepareCustomChunk($chunk), $libraryFile)->handle();
 
             if (empty($texts[$key])) {
                 $vectors[] = [];
