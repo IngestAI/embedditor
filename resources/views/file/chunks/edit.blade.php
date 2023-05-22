@@ -105,8 +105,8 @@
                 <input class="btn btn-success" type="submit" value="Save" />
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <!-- Modal -->
 {{--<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">--}}
@@ -219,7 +219,7 @@
         $chunkEditor.html(mergedData);
         $chunkEditorShowMore.text(mergedText);
 
-        // delete next next chunk
+        // delete next chunk
         $nextChunk.remove();
     })
 </script>
