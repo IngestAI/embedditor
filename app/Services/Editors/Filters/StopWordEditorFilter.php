@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Ai\Mappers;
+namespace App\Services\Editors\Filters;
 
-class StripAiMapper implements AiMapper
+class StopWordEditorFilter implements EditorFilter
 {
-    private string $rawData;
+    private string $data;
 
-    private string $result;
+    private string $filterData = '';
 
     private const STOP_WORDS = [
         "0o",
@@ -1171,29 +1171,22 @@ class StripAiMapper implements AiMapper
         "zz"
     ];
 
-    public function __construct(string $rawData)
+    public function __construct(string $data)
     {
-        $this->rawData = $rawData;
+        $this->data = $data;
     }
 
-    public static function make(string $rawData)
-    {
-        return new static($rawData);
-    }
-
-    public function handle(): AiMapper
+    public function filter(): EditorFilter
     {
         $stopWords = array_map(fn($item) => ' ' . $item . ' ', self::STOP_WORDS);
-
-        $result = mb_strtolower(preg_replace('/(?![!,])[[:punct:]]/', ' ', $this->rawData));
-        $result = str_replace($stopWords, ' ', $result);
-        $this->result = preg_replace('/[ ]{2,}/', ' ', $result);
+        $this->filterData = str_replace($stopWords, ' ', $this->data);
+        $this->filterData = preg_replace('/[ ]{2,}/', ' ', $this->filterData);
 
         return $this;
     }
 
-    public function getResult(): string
+    public function __toString(): string
     {
-        return trim($this->result);
+        return trim($this->filterData);
     }
 }

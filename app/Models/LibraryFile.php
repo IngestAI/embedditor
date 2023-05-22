@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Services\Ai\AiService;
-use App\Services\Ai\Mappers\StripAiMapper;
 use App\Services\Converters\ConverterResolver;
+use App\Services\Editors\Filters\Chains\EmbeddingEditorFilterChain;
 use App\Services\Storage\Adapters\EmbeddedStepService;
 use App\Services\Storage\Adapters\UploadedStepService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -151,16 +151,18 @@ class LibraryFile extends Model
             $client = AiService::createEmbeddingFactory();
             $html = $texts = $vectors = [];
             foreach ($chunks as $key => $chunk) {
-                $texts[$key] = StripAiMapper::make($chunk)->handle()->getResult();
+                $texts[$key] = EmbeddingEditorFilterChain::make($chunk)->handle();
                 $html[$key] = $chunk;
+                $vectors[$key] = [];
+
+                if (empty($texts[$key])) continue;
+
                 try {
                     $response = $client->send($texts[$key], $this->library->embedded_model);
                     if (!empty($response)) {
                         $vectors[$key] = $response;
                     }
-                } catch (\Exception $e) {
-                    $vectors[$key] = [];
-                }
+                } catch (\Exception $e) {}
             }
             if (!empty($texts) && !empty($vectors)) {
                 $embeddedStorage->upload($embeddedFilePath, json_encode([
