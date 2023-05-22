@@ -2,10 +2,9 @@
 
 namespace App\Services\Editors;
 
-use App\Http\Helpers\EmbedHelper;
 use App\Models\LibraryFile;
 use App\Services\Ai\AiService;
-use App\Services\Ai\Mappers\StripAiMapper;
+use App\Services\Editors\Filters\Chains\ChunkEditorFilterChain;
 use Log;
 
 class FileChunksEmbeddedEditor extends BaseFileChunks
@@ -62,8 +61,7 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
         $texts = array();
         $vectors = array();
         foreach ($chunks as $key => $chunk) {
-
-            $texts[$key] = StripAiMapper::make(self::prepareCustomChunk($chunk))->handle()->getResult();
+            $texts[$key] = ChunkEditorFilterChain::make(self::prepareCustomChunk($chunk))->handle();
             try {
                 $response = $client->send($texts[$key], $libraryFile->library->embedded_model);
                 if (!empty($response)) {
