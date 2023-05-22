@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PlaygroundSendRequest;
+use App\Models\Library;
 use App\Models\ProviderModel;
 use App\Services\Ai\AiService;
 use App\Services\Ai\Models\AiModelResolver;
@@ -31,7 +32,11 @@ class PlaygroundController extends Controller
         $providerModel = $request->provider_model;
 
         $filteredQuery = PlaygroundEditorFilterChain::make($query)->handle();
-        $aiModel = AiModelResolver::make($providerModel->slug)->resolve($filteredQuery);
+
+        $library = Library::default();
+        $requestQuery = $library->getRequestQuery($filteredQuery);
+
+        $aiModel = AiModelResolver::make($providerModel->slug)->resolve($requestQuery);
         if ($aiModel instanceof NullAiModel) {
             return response()->json(['result' => 2, 'answer' => 'Error: This model is not available yet']);
         }
