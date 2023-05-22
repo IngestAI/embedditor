@@ -63,14 +63,10 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
         $vectors = array();
         foreach ($chunks as $key => $chunk) {
 
-            $textItem = strip_tags(trim($chunk));
-            $filteredRequest = StripAiMapper::make(self::prepareCustomChunk($chunk))->handle()->getResult();
-
+            $texts[$key] = StripAiMapper::make(self::prepareCustomChunk($chunk))->handle()->getResult();
             try {
-                $response = $client->send($filteredRequest, $libraryFile->library->embedded_model);
-
+                $response = $client->send($texts[$key], $libraryFile->library->embedded_model);
                 if (!empty($response)) {
-                    $texts[$key] = $textItem;
                     $vectors[$key] = $response;
                 }
 
