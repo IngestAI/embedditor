@@ -17,12 +17,21 @@ class ChunkEditorFilterChain implements EditorFilterChain
 
     private bool $isStopWords = false;
 
+    private bool $isStripTag = false;
+
+    private bool $isStripPunctuation = false;
+
+    private bool $isStripSpecialChar = false;
+
     public function __construct(string $rawData, LibraryFile $libraryFile)
     {
         $this->rawData = $rawData;
 
         $this->isLowerCase = $libraryFile->lowercase;
         $this->isStopWords = $libraryFile->stop_word;
+        $this->isStripTag = $libraryFile->strip_tag;
+        $this->isStripPunctuation = $libraryFile->strip_punctuation;
+        $this->isStripSpecialChar = $libraryFile->strip_special_char;
     }
 
     public static function make(string $rawData, LibraryFile $libraryFile)
@@ -32,9 +41,16 @@ class ChunkEditorFilterChain implements EditorFilterChain
 
     public function handle(): string
     {
-        $data = (string) (new StripTagEditorFilter($this->rawData))->filter();
-        $data = (string) (new StripSpecialEditorFilter($data))->filter();
-        $data = (string) (new StripPunctEditorFilter($data))->filter();
+        $data = $this->rawData;
+        if ($this->isLowerCase) {
+            $data = (string) (new StripTagEditorFilter($data))->filter();
+        }
+        if ($this->isLowerCase) {
+            $data = (string) (new StripSpecialEditorFilter($data))->filter();
+        }
+        if ($this->isLowerCase) {
+            $data = (string) (new StripPunctEditorFilter($data))->filter();
+        }
         if ($this->isLowerCase) {
             $data = (string) (new LowerCaseEditorFilter($data))->filter();
         }

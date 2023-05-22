@@ -27,6 +27,18 @@
     <div class="mb-3">
         <div class="card-body">
             <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_tag" name="strip_tag" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                <label class="form-check-label" for="strip_tag">Strip tags</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_punctuation" name="strip_punctuation" value="1"@if ($libraryFile->strip_punctuation) checked="checked"@endif>
+                <label class="form-check-label" for="strip_punctuation">Strip punctuation</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
+                <label class="form-check-label" for="strip_special_char">Strip special_chars</label>
+            </div>
+            <div class="form-group row form-check">
                 <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
                 <label class="form-check-label" for="lowercase">Apply lowercase</label>
             </div>
