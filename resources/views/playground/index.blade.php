@@ -20,12 +20,12 @@
                         </ul>
                     </div>
                 @endif
-                <form id="playground-form" class="needs-validation" novalidate="">
+                <form id="playground-form" method="POST" class="needs-validation" novalidate="">
                     <div class="form-group">
                         <label for="model">Model</label>
                         <select class="form-control" id="model">
                             @foreach ($providerModels as $id => $title)
-                                <option value="{{ $id }}">{!! $title !!}</option>
+                                <option value="{{ $id }}" selected="selected">{!! $title !!}</option>
                             @endforeach
                         </select>
                     </div>

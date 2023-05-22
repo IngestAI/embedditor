@@ -2,9 +2,9 @@
 
 namespace App\Services\Editors;
 
-use App\Http\Helpers\EmbedHelper;
 use App\Models\LibraryFile;
 use App\Services\Ai\AiService;
+use App\Services\Editors\Filters\Chains\ChunkEditorFilterChain;
 use Log;
 
 class FileChunksEmbeddedEditor extends BaseFileChunks
@@ -22,18 +22,39 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
             return $this->handleSuccessResult($libraryFile);
         }
 
-        $chunks = self::filterChunksByList($embeddedFile->html, $libraryFile->chunked_list);
-        if (empty($chunks)) {
-            return $this->handleSuccessResult($libraryFile);
+        $client = AiService::createEmbeddingFactory();
+        $texts = [];
+        $vectors = [];
+        foreach ($embeddedFile->html as $key => $chunk) {
+
+            // 1. Filter chunk by checkboxes
+            if (isset($libraryFile->chunked_list) && !in_array($key, $libraryFile->chunked_list)) {
+                $texts[] = '';
+                $vectors[] = [];
+                continue;
+            }
+
+            // 2. Filter chunk content by colors
+            $texts[$key] = ChunkEditorFilterChain::make(self::prepareCustomChunk($chunk), $libraryFile)->handle();
+
+            if (empty($texts[$key])) {
+                $vectors[] = [];
+                continue;
+            }
+
+            $vectors[$key] = [];
+            try {
+                $response = $client->send($texts[$key], $libraryFile->library->embedded_model);
+                if (!empty($response)) {
+                    $vectors[$key] = $response;
+                }
+            } catch (\Exception $e) {
+                Log::error($e->getMessage() . ' ' . $e->getTraceAsString());
+            }
         }
 
-        $data = $this->getTextsAndVectors($libraryFile, $chunks);
-        if (empty($data['texts']) || empty($data['vectors'])) {
-            return $this->handleSuccessResult($libraryFile);
-        }
-
-        $embeddedFile->texts    = $data['texts'];
-        $embeddedFile->vectors  = $data['vectors'];
+        $embeddedFile->texts    = $texts;
+        $embeddedFile->vectors  = $vectors;
         $this->embeddedStorageService->upload($embeddedFilePath, json_encode($embeddedFile));
 
         return $this->handleSuccessResult($libraryFile);
@@ -48,57 +69,6 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
         $libraryFile->chunked = LibraryFile::STATUS_CHUNKED_OK;
         $libraryFile->save();
         return true;
-    }
-
-    /**
-     * @param array $chunks
-     * @return array[]
-     */
-    private function getTextsAndVectors(LibraryFile $libraryFile, array $chunks) : array
-    {
-        $client = AiService::createEmbeddingFactory();
-
-        $texts = array();
-        $vectors = array();
-        foreach ($chunks as $key => $chunk) {
-
-            $textItem = strip_tags(trim($chunk));
-            $chunkRequest = self::prepareCustomChunk($chunk);
-
-            try {
-
-                $response = $client->send($chunkRequest,$libraryFile->library->embedded_model);
-
-                if (!empty($response)) {
-                    $texts[$key] = $textItem;
-                    $vectors[$key] = $response;
-                }
-
-            } catch (\Exception $e) {
-                Log::error($e->getMessage() . ' ' . $e->getTraceAsString());
-                $vectors[$key] = [];
-            }
-        }
-
-        return [
-            'texts' => $texts,
-            'vectors' => $vectors,
-        ];
-    }
-
-    public static function filterChunksByList(array $chunks, array $chunkedList)
-    {
-        if (!isset($chunkedList)) {
-            return $chunks;
-        }
-
-        $chunksByChunkedList = [];
-        foreach ($chunks as $key => $chunk) {
-            if (!in_array($key, $chunkedList)) continue;
-            $chunksByChunkedList[] = $chunk;
-        }
-
-        return $chunksByChunkedList;
     }
 
     /**

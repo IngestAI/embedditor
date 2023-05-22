@@ -10,15 +10,21 @@ class FileChunksEditor extends BaseFileChunks
     {
         $embeddedFilePath = $libraryFile->getPathToSavingEmbeddedFile();
 
-        $embeddedFileHtml = '';
+        $embeddedFileHtml = [];
         if ($this->embeddedStorageService->exists($embeddedFilePath)) {
             $embeddedFile = json_decode($this->embeddedStorageService->get($embeddedFilePath));
+
             if (!empty($embeddedFile->html)) {
-                $embeddedFileHtml = str_replace("\n", '<br>', $embeddedFile->html);
+                foreach ($embeddedFile->html as $value) {
+                    $embeddedFileHtml[] = str_replace(PHP_EOL, '<br>', $value);
+                }
             }
         }
 
-        return $embeddedFileHtml;
+        return [
+            'html' => $embeddedFileHtml,
+            'texts' => $embeddedFile->texts,
+        ];
     }
 
     public function updateItemChunked(LibraryFile $libraryFile, $aFileData)
@@ -28,5 +34,67 @@ class FileChunksEditor extends BaseFileChunks
         $embeddedFile->html = $aFileData;
 
         return $this->embeddedStorageService->upload($embeddedFilePath, json_encode($embeddedFile));
+    }
+
+    /**
+     * @param array $requestChunks
+     * @param array|null $requestChunkedList
+     * @return array[]
+     */
+    public function reorderDataKeys(array $requestChunks, ?array $requestChunkedList) : array
+    {
+        $chunks = $chunkedList = [];
+        $currentKey = 0;
+        foreach ($requestChunks as $key => $chunk) {
+            $chunks[$currentKey] = $chunk;
+            if (isset($requestChunkedList[$key])) {
+                $chunkedList[$currentKey] = (string)$currentKey;
+            }
+            $currentKey++;
+        }
+
+        return [
+            'chunks'        => $chunks,
+            'chunkedList'   => $chunkedList,
+        ];
+    }
+
+    /**
+     * @param array $chunks
+     * @param string $chunkSeparator
+     * @return array[]
+     */
+    public function splitDataBySeparator(array $data, string $chunkSeparator) : array
+    {
+        $chunksBySeparators = $chunkedListBySeparators = [];
+        $currentKey = 0;
+
+        foreach ($data['chunks'] as $key => $chunk) {
+            $currentChunkedListStatus = isset($data['chunkedList'][$key]);
+
+            $chunkParts = explode($chunkSeparator, $chunk);
+
+            if (count($chunkParts) == 1) {
+                $chunksBySeparators[$currentKey] = $chunk;
+                if ($currentChunkedListStatus) {
+                    $chunkedListBySeparators[$currentKey] = (string)$currentKey;
+                }
+                $currentKey++;
+                continue;
+            }
+
+            foreach ($chunkParts as $value) {
+                $chunksBySeparators[$currentKey] = $value;
+                if ($currentChunkedListStatus) {
+                    $chunkedListBySeparators[$currentKey] = (string)$currentKey;
+                }
+                $currentKey++;
+            }
+        }
+
+        return [
+            'chunks'        => $chunksBySeparators,
+            'chunkedList'   => $chunkedListBySeparators,
+        ];
     }
 }

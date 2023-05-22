@@ -57,10 +57,20 @@ class FileEditorController extends Controller
 
     public function chunksUpdate(LibraryFile $libraryFile, Request $request)
     {
-        $libraryFile->chunked_list = $request->chunked_list;
+        $data = $this->fileChunksEditorService->reorderDataKeys($request->chunks, $request->chunked_list);
+
+        $chunkSeparator = $libraryFile->library->chunk_separator ?? LibraryFile::DEFAULT_CHUNK_SEPARATOR;
+        $data = $this->fileChunksEditorService->splitDataBySeparator($data, $chunkSeparator);
+
+        $libraryFile->stop_word = (bool) ($request->stop_word ?? false);
+        $libraryFile->lowercase = (bool) ($request->lowercase ?? false);
+        $libraryFile->strip_tag = (bool) ($request->strip_tag ?? false);
+        $libraryFile->strip_punctuation = (bool) ($request->strip_punctuation ?? false);
+        $libraryFile->strip_special_char = (bool) ($request->strip_special_char ?? false);
+        $libraryFile->chunked_list = $data['chunkedList'];
         $libraryFile->save();
 
-        if (!$this->fileChunksEditorService->updateItemChunked($libraryFile, $request->chunks)) {
+        if (!$this->fileChunksEditorService->updateItemChunked($libraryFile, $data['chunks'])) {
             return back()->with('status', 'file-updated-error');
         }
 

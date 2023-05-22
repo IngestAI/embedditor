@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Ai\Completions;
+namespace App\Services\Ai\Chat;
 
 use OpenAI;
 
-class OpenAiCompletion implements AiCompletion
+class OpenAiChat implements AiChat
 {
 
     private string $apiKey;
@@ -22,7 +22,7 @@ class OpenAiCompletion implements AiCompletion
     {
         $client = OpenAI::client($this->apiKey);
 
-        $response = $client->completions()->create($data);
+        $response = $client->chat()->create($data);
 
         $result = trim($response->choices[0]->text ?? '');
 

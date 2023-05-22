@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Ai\Completions;
+namespace App\Services\Ai\Chat;
 
-interface AiCompletion
+interface AiChat
 {
     public function send(array $data): mixed;
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Ai\AiService;
 use App\Services\Converters\ConverterResolver;
+use App\Services\Editors\Filters\Chains\EmbeddingEditorFilterChain;
 use App\Services\Storage\Adapters\EmbeddedStepService;
 use App\Services\Storage\Adapters\UploadedStepService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,8 @@ class LibraryFile extends Model
 {
     use HasFactory;
 
+    const DEFAULT_CHUNK_SEPARATOR = '=====';
+
     public const STATUS_CHUNKED_OK = 1;
     public const STATUS_CHUNKED_ERROR = 2;
     public const STATUS_CHUNKED_PROCESSING = 3;
@@ -22,7 +25,7 @@ class LibraryFile extends Model
     const DISK_SUB_PATH_RAW = 'raw';
     const DISK_SUB_PATH_DB = 'db';
 
-    protected $fillable = ['library_id', 'original_name', 'file_key', 'filename'];
+    protected $fillable = ['library_id', 'original_name', 'file_key', 'filename', 'strip_tag', 'strip_punctuation', 'strip_special_char'];
 
     protected $casts = [
         'chunked_list' => 'array'
@@ -113,6 +116,8 @@ class LibraryFile extends Model
             return $chunks = explode($this->library->chunk_separator, $fileData);
         }
 
+        $chunkSize = $this->library->chunk_size;
+
         // simple file with "chunk_size"
         $parts = explode("\n", $fileData);
         $k = 0;
@@ -126,7 +131,7 @@ class LibraryFile extends Model
                 } else {
                     $chunks[$k] .= $part;
                 }
-                if (strlen($chunks[$k]) > $this->library->chunk_size) {
+                if (strlen($chunks[$k]) > $chunkSize) {
                     $k++;
                 }
             }
@@ -148,22 +153,25 @@ class LibraryFile extends Model
                 $embeddedStorage->upload($embeddedFilePath, '');
             }
             $client = AiService::createEmbeddingFactory();
-            $texts = $vectors = [];
+            $html = $texts = $vectors = [];
+            $libraryFile = self::find($this->id);
             foreach ($chunks as $key => $chunk) {
-                $chunk = trim($chunk);
-                $texts[$key] = $chunk;
+                $texts[$key] = EmbeddingEditorFilterChain::make($chunk, $libraryFile)->handle();
+                $html[$key] = $chunk;
+                $vectors[$key] = [];
+
+                if (empty($texts[$key])) continue;
+
                 try {
-                    $response = $client->send($chunk, $this->library->embedded_model);
+                    $response = $client->send($texts[$key], $this->library->embedded_model);
                     if (!empty($response)) {
                         $vectors[$key] = $response;
                     }
-                } catch (\Exception $e) {
-                    $vectors[$key] = [];
-                }
+                } catch (\Exception $e) {}
             }
             if (!empty($texts) && !empty($vectors)) {
                 $embeddedStorage->upload($embeddedFilePath, json_encode([
-                    'html' => $texts,
+                    'html' => $html,
                     'texts' => $texts,
                     'vectors' => $vectors,
                     // 'meta' => $meta TODO

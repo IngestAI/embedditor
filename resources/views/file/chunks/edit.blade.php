@@ -18,22 +18,48 @@
 
 @section('content')
 
-<a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
-<div class="mb-3 mb-lg-5">
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Edit file by chunks</h5>
-        </div>
-        <div class="card-body">
-            <form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
-                @csrf
-                @method('put')
+<form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
+    @csrf
+    @method('put')
 
+    <a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+
+    <div class="mb-3">
+        <div class="card-body">
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_tag" name="strip_tag" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                <label class="form-check-label" for="strip_tag">Strip tags</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_punctuation" name="strip_punctuation" value="1"@if ($libraryFile->strip_punctuation) checked="checked"@endif>
+                <label class="form-check-label" for="strip_punctuation">Strip punctuation</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
+                <label class="form-check-label" for="strip_special_char">Strip special_chars</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
+                <label class="form-check-label" for="lowercase">Apply lowercase</label>
+            </div>
+            <div class="form-group row form-check">
+                <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
+                <label class="form-check-label" for="lowercase">Use stop words</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 mb-lg-5">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Edit file by chunks</h5>
+            </div>
+            <div class="card-body">
                 <div id="quill-area">
-                    @foreach($chunks as $key => $chunk)
-                        <div class="d-flex">
+                    @foreach($chunks['html'] as $key => $chunk)
+                        <div class="d-flex js_chunk-item">
                             <div class="d-flex flex-column w-100">
-                                <div class="d-flex flex-column position-relative" id="textHolder{{$key}}">
+                                <div class="d-flex flex-column position-relative js_text-holder" id="textHolder{{$key}}">
                                     <span class="d-flex ml-auto text-primary position-absolute" style="top: 8px; right: 8px;">
                                         <button type="button" class="btn btn-link px-1 py-0 js_decrease-button" onclick="decreaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">a -</button>
                                         /
@@ -45,63 +71,51 @@
                                             {!! $chunk !!}
                                         </p>
                                     </div>
-                                    <textarea name="chunks[{{$key}}]" style="display:none" id="hidden-chunk-{{$key}}"></textarea>
+                                    <textarea name="chunks[{{$key}}]" style="display:none"></textarea>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
-                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                            Show more
-                                        </button>
-                                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#approveModal">
-                                            Join chunks
-                                        </button>
+                                        @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
+                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                                Show more
+                                            </button>
+                                        @else
+                                        @endif
+
+                                        @if($key < count($chunks['html']) - 1)
+                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">Join chunks</button>
+                                        @endif
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
-                                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+
+                                            <div class="js_chunk-item-text">
+                                                @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
+                                                    {!! $chunks['texts'][$key] !!}
+                                                @endif
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-flex align-items-start pt-3 pl-3">
-                                <input name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
+                                <input class="js_checkbox" name="chunked_list[{{$key}}]" type="checkbox" value="{{$key}}"
                                    @if(!empty($libraryFile->chunked_list))
                                        @if( isset($libraryFile->chunked_list[$key])) checked @endif
                                    @else
                                        checked
                                    @endif
-                                   id="checkChunk-{{$key}}"
                                 >
                             </div>
                         </div>
                     @endforeach
                 </div>
                 <input class="btn btn-success" type="submit" value="Save" />
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title h4" id="approveModalLabel">Join chunks</h1>
-                <button type="button" class="btn btn-link text-secondary p-0" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="bi bi-x h3"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                Do you really want to join chunks?
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Join</button>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 @endsection
 
@@ -109,7 +123,6 @@
 
     <!-- Include the Quill library -->
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-{{--    <script src="{{ asset('js/bootstrap.min.js') }}"></script>--}}
 
 <script>
     var initQuill = document.querySelectorAll("[data-quill]");
@@ -118,7 +131,7 @@
             ...(qe.dataset.quill ? JSON.parse(qe.dataset.quill) : {}),
             modules: {
                 toolbar: [
-                    [{ 'background': ['#E7E6E6', "#e60000", "#008a00"] }]
+                    [{ 'background': ["transparent", "#e60000", "#008a00"] }]
                 ]
             },
             theme: "snow"
@@ -129,7 +142,7 @@
     $("#chunks-form").on("submit",function(event) {
         $chunks = $('#quill-area .ql-editor');
         $.each($chunks, function (index, value) {
-            $("#hidden-chunk-" + index).html($(value).html());
+            $(value).parent().parent().find('textarea').html($(value).html());
         });
     })
 
@@ -160,6 +173,58 @@
             target.setAttribute('disabled', 'disabled');
         }
     }
+</script>
+
+<script>
+    $(".js_join-chunks").on("click",function(event) {
+
+        Swal.fire({
+            title: "Join chunks",
+            text: "Do you really want to join chunks?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Join',
+            denyButtonText: `Cancel`,
+
+        }).then(function(result) {
+
+            if (!result.isConfirmed) return;
+
+            // chunk
+            var clickedChunkIdToJoin = $(event.currentTarget).data('chunk-key')
+            $chunk = $(event.currentTarget).parents('.js_chunk-item');
+
+            // chunk data
+            $chunkEditor = $chunk.find('.ql-editor');
+            $chunkData = $chunkEditor.html();
+            $chunkEditorShowMore = $chunk.find('.js_chunk-item-text');
+            $chunkText = $chunkEditorShowMore.text();
+
+            // next chunk
+            $nextChunk = $chunk.next();
+
+            // next chunk data
+            $nextChunkData = $nextChunk.find('.ql-editor').html();
+            $nextChunkText = $nextChunk.find('.js_chunk-item-text').text();
+
+            if ($nextChunkData == undefined) {
+                return;
+            }
+
+            // merge data
+            mergedData = $chunkData + '<br>' + $nextChunkData;
+            mergedText = $chunkText + ' ' + $nextChunkText;
+
+            // insert data
+            $chunkEditor.html(mergedData);
+            $chunkEditorShowMore.text(mergedText);
+
+            // delete next chunk
+            $nextChunk.remove();
+
+            $('.js_chunk-item').last().find('.js_join-chunks').hide();
+        })
+    })
 </script>
 
 <script>

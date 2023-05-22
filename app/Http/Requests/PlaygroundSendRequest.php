@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ProviderModel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PlaygroundSendRequest extends FormRequest
@@ -33,5 +34,14 @@ class PlaygroundSendRequest extends FormRequest
             'q.required' => 'The query is required',
             'model_id.exists' => 'The model is wrong',
         ];
+    }
+
+    public function passedValidation()
+    {
+        $providerModel = ProviderModel::find(request()->model_id);
+
+        $this->merge([
+            'provider_model' => $providerModel,
+        ]);
     }
 }
