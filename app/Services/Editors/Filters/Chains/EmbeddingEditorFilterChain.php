@@ -11,39 +11,18 @@ class EmbeddingEditorFilterChain implements EditorFilterChain
 {
     private string $rawData;
 
-    private bool $isStripTag = false;
-
-    private bool $isStripPunctuation = false;
-
-    private bool $isStripSpecialChar = false;
-
-    public function __construct(string $rawData, LibraryFile $libraryFile)
+    public function __construct(string $rawData)
     {
         $this->rawData = $rawData;
-
-        $this->isStripTag = $libraryFile->strip_tag;
-        $this->isStripPunctuation = $libraryFile->strip_punctuation;
-        $this->isStripSpecialChar = $libraryFile->strip_special_char;
     }
 
-    public static function make(string $rawData, LibraryFile $libraryFile)
+    public static function make(string $rawData)
     {
-        return new static($rawData, $libraryFile);
+        return new static($rawData);
     }
 
     public function handle(): string
     {
-        $data = $this->rawData;
-        if ($this->isStripTag) {
-            $data = (string) (new StripTagEditorFilter($data))->filter();
-        }
-        if ($this->isStripPunctuation) {
-            $data = (string) (new StripSpecialEditorFilter($data))->filter();
-        }
-        if ($this->isStripSpecialChar) {
-            $data = (string) (new StripPunctEditorFilter($data))->filter();
-        }
-
-        return $data;
+        return $this->rawData;
     }
 }
