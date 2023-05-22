@@ -2,10 +2,6 @@
 
 namespace App\Services\Editors\Filters\Chains;
 
-use App\Services\Editors\Filters\StripPunctEditorFilter;
-use App\Services\Editors\Filters\StripSpecialEditorFilter;
-use App\Services\Editors\Filters\StripTagEditorFilter;
-
 class PlaygroundEditorFilterChain implements EditorFilterChain
 {
     private string $rawData;
@@ -22,9 +18,6 @@ class PlaygroundEditorFilterChain implements EditorFilterChain
 
     public function handle(): string
     {
-        $data = (string) (new StripTagEditorFilter($this->rawData))->filter();
-        $data = (string) (new StripSpecialEditorFilter($data))->filter();
-
-        return (string) (new StripPunctEditorFilter($data))->filter();
+        return $this->rawData;
     }
 }

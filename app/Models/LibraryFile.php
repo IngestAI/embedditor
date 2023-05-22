@@ -154,9 +154,8 @@ class LibraryFile extends Model
             }
             $client = AiService::createEmbeddingFactory();
             $html = $texts = $vectors = [];
-            $libraryFile = self::find($this->id);
             foreach ($chunks as $key => $chunk) {
-                $texts[$key] = EmbeddingEditorFilterChain::make($chunk, $libraryFile)->handle();
+                $texts[$key] = EmbeddingEditorFilterChain::make($chunk)->handle();
                 $html[$key] = $chunk;
                 $vectors[$key] = [];
 
