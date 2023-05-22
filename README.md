@@ -1,4 +1,63 @@
-## Embedditor
+# Embedditor
+
+<p align="center">
+  <img width="300" height="300" src="https://embedditor.ingestai.co/images/logo.jpg">
+</p>
+
+
+
+### Get the most out of your vector search
+
+Embedditor is an open source embedding pre-processing technology that helps you get the most out of your vector search, while reducing costs of embedding and vector storage.
+
+### Embed like a pro
+
+Work on your embedding metadata and tokens with a user-friendly UI. Seamlessly cleanse, normalize, and enrich your embedding tokens, improving efficiency and accuracy in your LLM-related applications.
+
+### Uplevel your vector search
+
+Optimize the relevance of the content you get back from a vector database, intelligently splitting or merging the content based on its structure and adding void or hidden tokens, making chunks even more semantically coherent.
+
+### Automate with NLP algorithms
+
+Apply TF-IDF model with one click to determine unsignificant words in your documents and filter their tokens out of embedding to get even better vector search results and save on vector storage.
+
+### Get the full control over your data
+
+Get the full control over your data effortlessly deploying Embedditor locally on your PC or in your dedicated enterprise cloud or on-premises environment.
+
+### Reduce your costs
+
+Applying Embedditor cleansing of irrelevant tokens like stop-words, punctuations, and low-relevant words you can save up to 70% on the cost of vector storage and embedding.
+
+
+### Use it anywhere
+
+Save your processed embedding metadata and tokens in .embs or json to share it with your team, use it in LangChain, or upload to any vector database, like Chroma.
+
+**Try it now with [IngestAI](https://ingestai.io/signup).**
+
+### FAQ
+
+**What is embedding (vectorization)?**
+
+**What are embeddings?**
+
+**What is vector search?**
+
+**What is embeddings metadata?**
+
+**What is embedding tokens?**
+
+**What is void embedding tokens?**
+A void (embedding) tokens are words in your content (embedding metadata), that will appear in your vector search results but are filtered out of embedding and so won’t be found with vector search.
+
+**What is hidden embedding token?**
+A hidden embedding token is a token that will be embedded for vector storage but doesn’t appear in your metadata – the content you will retrieve using vector search.
+
+**What size have embeddings?**
+Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage.
+
 
 ### Installation
 
