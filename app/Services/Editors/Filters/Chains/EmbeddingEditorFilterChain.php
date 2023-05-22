@@ -2,11 +2,6 @@
 
 namespace App\Services\Editors\Filters\Chains;
 
-use App\Models\LibraryFile;
-use App\Services\Editors\Filters\StripPunctEditorFilter;
-use App\Services\Editors\Filters\StripSpecialEditorFilter;
-use App\Services\Editors\Filters\StripTagEditorFilter;
-
 class EmbeddingEditorFilterChain implements EditorFilterChain
 {
     private string $rawData;
