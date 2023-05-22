@@ -25,26 +25,39 @@
     <a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
 
     <div class="mb-3">
-        <div class="card-body">
-            <div class="form-group row form-check">
-                <input type="checkbox" class="form-check-input" id="strip_tag" name="strip_tag" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
-                <label class="form-check-label" for="strip_tag">Strip tags</label>
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Embedding Options</h5>
             </div>
-            <div class="form-group row form-check">
-                <input type="checkbox" class="form-check-input" id="strip_punctuation" name="strip_punctuation" value="1"@if ($libraryFile->strip_punctuation) checked="checked"@endif>
-                <label class="form-check-label" for="strip_punctuation">Strip punctuation</label>
-            </div>
-            <div class="form-group row form-check">
-                <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
-                <label class="form-check-label" for="strip_special_char">Strip special_chars</label>
-            </div>
-            <div class="form-group row form-check">
-                <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
-                <label class="form-check-label" for="lowercase">Apply lowercase</label>
-            </div>
-            <div class="form-group row form-check">
-                <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
-                <label class="form-check-label" for="lowercase">Use stop words</label>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="strip_tag" name="strip_tag" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                            <label class="form-check-label" for="strip_tag">Strip tags</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="strip_punctuation" name="strip_punctuation" value="1"@if ($libraryFile->strip_punctuation) checked="checked"@endif>
+                            <label class="form-check-label" for="strip_punctuation">Strip punctuation</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
+                            <label class="form-check-label" for="strip_special_char">Strip special_chars</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
+                            <label class="form-check-label" for="lowercase">Apply lowercase</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
+                            <label class="form-check-label" for="lowercase">Use stop words</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
