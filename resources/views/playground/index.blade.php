@@ -1,16 +1,10 @@
 @extends('layouts.app')
 
+@section('button')
+    <a class="btn btn-primary" href="{{ route('web::library::index') }}" role="button">Vector Storage</a>
+@endsection
 
 @section('content')
-
-    <div class="container-fluid mb-3 mb-lg-5">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-end">
-                <a class="btn btn-primary btn-lg" href="{{ route('web::library::index') }}" role="button">Vector Storage</a>
-            </div>
-        </div>
-    </div>
-
     <div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
