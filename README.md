@@ -37,7 +37,7 @@ Save your processed embedding metadata and tokens in .embs or json to share it w
 
 
 ## Quick try
-**Try it now with free trial [IngestAI](https://ingestai.io/signup).**
+**Sign up for free and try it in [IngestAI](https://ingestai.io/signup).**
 
 ### FAQ
 
