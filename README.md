@@ -39,7 +39,7 @@ Save your processed embedding metadata and tokens in .embs or json to share it w
 ## Quick try
 **Sign up for free and try it in [IngestAI](https://ingestai.io/signup).**
 
-# Rich Spreadsheet Interface
+<!-- # Rich Spreadsheet Interface
 
 - ⚡ **Basic Operations**: Create, Read, Update and Delete Tables, Columns, and Rows
 - ⚡ **Fields Operations**: Sort, Filter, Hide / Unhide Columns
@@ -48,7 +48,7 @@ Save your processed embedding metadata and tokens in .embs or json to share it w
 - ⚡ **Share Bases / Views**: either Public or Private (with Password Protected)
 - ⚡ **Variant Cell Types**: ID, LinkToAnotherRecord, Lookup, Rollup, SingleLineText, Attachment, Currency, Formula, etc
 - ⚡ **Access Control with Roles**: Fine-grained Access Control at different levels
-- ⚡ **and more**
+- ⚡ **and more** -->
 
 <!-- ### FAQ
 
