@@ -16,14 +16,15 @@
 
 @endsection
 
+@section('button')
+    <a class="btn btn-secondary" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+@endsection
+
 @section('content')
 
 <form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
     @csrf
     @method('put')
-
-    <a class="btn btn-secondary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
-
     <div class="mb-3">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
@@ -33,11 +34,18 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="optimize" name="optimize" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                            <input type="checkbox" class="form-check-input" id="optimize" name="optimize" onclick="selectAllOptions(this)" value="1"@if ($libraryFile->isOptimize()) checked="checked"@endif>
                             <label class="form-check-label" for="optimize">Optimize content</label>
                         </div>
-                        <p>XX out of YY words choosen for embedding. Storage optimized: ≈ 35%</p>
+                        <p>{{ $libraryFile->total_embedded_words }} out of {{ $libraryFile->total_words }} words choosen for embedding. Storage optimized: ≈ {{ $libraryFile->getTotalPercentage() }}%</p>
                         <input class="btn btn-success" type="submit" value="Apply" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <span class="d-flex w-100 justify-content-end text-primary">
+                            <button id="js_decrease-button" type="button" class="btn btn-link px-1 py-0" onclick="decreaseFontSize(this)" style="text-decoration: none;">a -</button>
+                            /
+                            <button id="js_increase-button" type="button" class="btn btn-link px-1 py-0" onclick="increaseFontSize(this)" style="text-decoration: none;">A +</button>
+                        </span>
                     </div>
                 </div>
                 <div id="advOptions" class="row" style="display: none;">
@@ -86,12 +94,7 @@
                     @foreach($chunks['html'] as $key => $chunk)
                         <div class="d-flex js_chunk-item">
                             <div class="d-flex flex-column w-100">
-                                <div class="d-flex flex-column position-relative js_text-holder" id="textHolder{{$key}}">
-                                    <span class="d-flex ml-auto text-primary position-absolute" style="top: 8px; right: 8px;">
-                                        <button type="button" class="btn btn-link px-1 py-0 js_decrease-button" onclick="decreaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">a -</button>
-                                        /
-                                        <button type="button" class="btn btn-link px-1 py-0 js_increase-button" onclick="increaseFontSize(this, 'textHolder{{$key}}')" style="text-decoration: none;">A +</button>
-                                    </span>
+                                <div class="d-flex flex-column">
                                     <!--Quill editor-->
                                     <div data-quill='{"placeholder": "Quill WYSIWYG"}'>
                                         <p>
@@ -173,27 +176,47 @@
     const maxFontValue = 24;
     const fontValueChange = 1;
 
-    function decreaseFontSize(target, parentEl) {
-        const targetTextarea = document.getElementById(parentEl).getElementsByClassName('ql-container')
-        let newTextareaFontValue = parseInt(getComputedStyle(targetTextarea[0]).fontSize) - fontValueChange
+    function decreaseFontSize(target) {
+        const targetTextareas = document.querySelectorAll('.ql-container')
+        let newTextareasFontValue = parseInt(getComputedStyle(targetTextareas[0]).fontSize) - fontValueChange
 
-        document.getElementById(parentEl).getElementsByClassName('js_increase-button')[0].removeAttribute('disabled')
-        targetTextarea[0].style.fontSize = newTextareaFontValue + 'px';
+        document.getElementById('js_increase-button').removeAttribute('disabled')
+        targetTextareas.forEach(function (el) {
+            el.style.fontSize = newTextareasFontValue + 'px';
+        });
 
-        if (newTextareaFontValue <= minFontValue) {
+        if (newTextareasFontValue <= minFontValue) {
             target.setAttribute('disabled', 'disabled');
         }
     }
 
-    function increaseFontSize(target, parentEl) {
-        const targetTextarea = document.getElementById(parentEl).getElementsByClassName('ql-container')
-        let newTextareaFontValue = parseInt(getComputedStyle(targetTextarea[0]).fontSize) + fontValueChange
+    function increaseFontSize(target) {
+        const targetTextareas = document.querySelectorAll('.ql-container')
+        let newTextareasFontValue = parseInt(getComputedStyle(targetTextareas[0]).fontSize) + fontValueChange
 
-        document.getElementById(parentEl).getElementsByClassName('js_decrease-button')[0].removeAttribute('disabled')
-        targetTextarea[0].style.fontSize = newTextareaFontValue + 'px';
+        document.getElementById('js_decrease-button').removeAttribute('disabled')
+        targetTextareas.forEach(function (el) {
+            el.style.fontSize = newTextareasFontValue + 'px';
+        });
 
-        if (newTextareaFontValue >= maxFontValue) {
+        if (newTextareasFontValue >= maxFontValue) {
             target.setAttribute('disabled', 'disabled');
+        }
+    }
+
+    function selectAllOptions(targetEl) {
+        const targetCheckboxes = document.getElementById('advOptions').querySelectorAll('.form-check-input')
+
+        if (targetEl.checked) {
+            targetCheckboxes.forEach(function (el) {
+                if (!el.disabled) {
+                    el.setAttribute('checked', 'checked');
+                }
+            });
+        } else {
+            targetCheckboxes.forEach(function (el) {
+                el.removeAttribute('checked');
+            });
         }
     }
 </script>

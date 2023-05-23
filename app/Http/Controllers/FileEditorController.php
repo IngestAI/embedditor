@@ -49,9 +49,14 @@ class FileEditorController extends Controller
 
     public function chunksEdit(LibraryFile $libraryFile)
     {
+        $optimizePercentage = $libraryFile->total_embedded_words
+            ? round(100 - 100 * (($libraryFile->total_words - ($libraryFile->total_words - $libraryFile->total_embedded_words)) / $libraryFile->total_words))
+            : 0;
+
         return view('file.chunks.edit', [
             'libraryFile' => $libraryFile,
             'chunks' => $this->fileChunksEditorService->getItemChunked($libraryFile),
+            'optimize_percentage' => $optimizePercentage,
         ]);
     }
 
@@ -62,11 +67,11 @@ class FileEditorController extends Controller
         $chunkSeparator = $libraryFile->library->chunk_separator ?? LibraryFile::DEFAULT_CHUNK_SEPARATOR;
         $data = $this->fileChunksEditorService->splitDataBySeparator($data, $chunkSeparator);
 
-        $libraryFile->stop_word = (bool) ($request->stop_word ?? false);
-        $libraryFile->lowercase = (bool) ($request->lowercase ?? false);
-        $libraryFile->strip_tag = (bool) ($request->strip_tag ?? false);
-        $libraryFile->strip_punctuation = (bool) ($request->strip_punctuation ?? false);
-        $libraryFile->strip_special_char = (bool) ($request->strip_special_char ?? false);
+        $libraryFile->stop_word = (bool) ($request->optimize ?? false);
+        $libraryFile->lowercase = (bool) ($request->optimize ?? false);
+        $libraryFile->strip_tag = (bool) ($request->optimize ?? false);
+        $libraryFile->strip_punctuation = (bool) ($request->optimize ?? false);
+        $libraryFile->strip_special_char = (bool) ($request->optimize ?? false);
         $libraryFile->chunked_list = $data['chunkedList'];
         $libraryFile->save();
 
@@ -75,6 +80,11 @@ class FileEditorController extends Controller
         }
 
         $this->fileChunksEmbeddedEditorService->execute($libraryFile);
+
+        $libraryFile->total_words = $libraryFile->getTotalRawWords();
+        $libraryFile->total_embedded_words = $libraryFile->getTotalEmbeddedWords();
+        $libraryFile->save();
+
         return back()->with('status', 'file-updated-successfully');
     }
 }
