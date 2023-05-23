@@ -39,7 +39,7 @@ Save your processed embedding metadata and tokens in .embs or json to share it w
 ## Quick try
 **Sign up for free and try it in [IngestAI](https://ingestai.io/signup).**
 
-### FAQ
+<!-- ### FAQ
 
 **What is embedding (vectorization)?**
 
@@ -58,7 +58,7 @@ A void (embedding) tokens are words in your content (embedding metadata), that w
 A hidden embedding token is a token that will be embedded for vector storage but doesn’t appear in your metadata – the content you will retrieve using vector search.
 
 **What size have embeddings?**
-Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage.
+Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage. -->
 
 
 ### Installation
