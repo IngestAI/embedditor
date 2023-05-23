@@ -22,29 +22,39 @@
     @csrf
     @method('put')
 
-    <a class="btn btn-primary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
+    <a class="btn btn-secondary mb-4" href="{{ route('web::library::index') }}" title="Back button">Back</a>
 
     <div class="mb-3">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Embedding Options</h5>
+                <h5 class="mb-0">Options</h5>
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="optimize" name="optimize" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                            <label class="form-check-label" for="optimize">Optimize content</label>
+                        </div>
+                        <p>XX out of YY words choosen for embedding. Storage optimized: ≈ 35%</p>
+                        <input class="btn btn-success" type="submit" value="Apply" />
+                    </div>
+                </div>
+                <div id="advOptions" class="row" style="display: none;">
                     <div class="col-12 col-md-4">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="strip_tag" name="strip_tag" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
-                            <label class="form-check-label" for="strip_tag">Strip tags</label>
+                            <label class="form-check-label" for="strip_tag">Remove HTML Tags</label>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="strip_punctuation" name="strip_punctuation" value="1"@if ($libraryFile->strip_punctuation) checked="checked"@endif>
-                            <label class="form-check-label" for="strip_punctuation">Strip punctuation</label>
+                            <label class="form-check-label" for="strip_punctuation">Remove punctuations</label>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="strip_special_char" name="strip_special_char" value="1"@if ($libraryFile->strip_special_char) checked="checked"@endif>
-                            <label class="form-check-label" for="strip_special_char">Strip special chars</label>
+                            <label class="form-check-label" for="strip_special_char">Remove special chars</label>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase"@if ($libraryFile->lowercase) checked="checked"@endif>
@@ -54,7 +64,7 @@
                     <div class="col-12 col-md-4">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
-                            <label class="form-check-label" for="lowercase">Use stop words</label>
+                            <label class="form-check-label" for="stop_word">Remove stop words</label>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" disabled="disabled">
@@ -93,17 +103,18 @@
                                 <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
                                         @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
-                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">Embeddable Content</button>
+                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">↓ See Embedding Tokens</button>
                                         @else
                                         @endif
                                         @if($key < count($chunks['html']) - 1)
-                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">Join Chunks</button>
+                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">↕ Join Chunks</button>
                                         @endif
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
                                             <div class="js_chunk-item-text">
                                                 @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
+                                                    <p class="text-secondary">These words will be sent for embedding:</p>
                                                     {!! $chunks['texts'][$key] !!}
                                                 @endif
                                             </div>
@@ -188,6 +199,7 @@
 </script>
 
 <script>
+    $('#advOptions').hide();
     $(".js_join-chunks").on("click",function(event) {
 
         Swal.fire({
