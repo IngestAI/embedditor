@@ -31,7 +31,7 @@ class ProviderModelSeeder extends Seeder
             ],
             [
                 'provider_id' => $openaiProvider,
-                'slug' => 'openai',
+                'slug' => 'gpt-4',
                 'name' => 'GPT-4',
                 'active' => true,
                 'input_format' => 'text',
