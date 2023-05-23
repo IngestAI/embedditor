@@ -6,7 +6,7 @@
 
 
 
-### Get the most out of your vector search
+## Get the most out of your vector search
 
 Embedditor is an open source editor that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
@@ -35,7 +35,9 @@ Applying Embedditor cleansing of irrelevant tokens like stop-words, punctuations
 
 Save your processed embedding metadata and tokens in .embs or json to share it with your team, use it in LangChain, or upload to any vector database, like Chroma.
 
-**Try it now with [IngestAI](https://ingestai.io/signup).**
+
+## Quick try
+**Try it now with free trial [IngestAI](https://ingestai.io/signup).**
 
 ### FAQ
 
