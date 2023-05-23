@@ -8,7 +8,7 @@
 
 ### Get the most out of your vector search
 
-Embedditor is an open source embedding pre-processing technology that helps you get the most out of your vector search, while reducing costs of embedding and vector storage.
+Embedditor is an open source editor that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
 ### Embed like a pro
 
