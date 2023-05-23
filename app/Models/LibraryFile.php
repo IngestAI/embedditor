@@ -214,7 +214,7 @@ class LibraryFile extends Model
             . '/' . round($this->library_id/1000, 0)
             . '/'
             . $this->id
-            . '.embd';
+            . '.veml';
     }
 
     public function getTotalRawWords(): int
