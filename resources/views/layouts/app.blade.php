@@ -54,7 +54,7 @@
 
     <footer class="py-3 mt-auto">
         <div class="container">
-            <p class="text-right text-muted">&copy; <script>document.write(new Date().getFullYear())</script>. IngestAI Labs Inc.</p>
+            <p class="text-right text-muted">&copy; <script>document.write(new Date().getFullYear())</script>. <a href="https://ingestai.io" target="_blank">IngestAI</a> Labs Inc.</p>
         </div>
     </footer>
 </div>
