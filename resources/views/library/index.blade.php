@@ -5,10 +5,10 @@
 @endsection
 
 @section('content')
-    <div class="mb-3 mb-lg-5">
+    {{--<div class="mb-3 mb-lg-5">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
-                Edit Options
+                Options
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -40,7 +40,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>--}}
 
     <div class="mb-3 mb-lg-5">
         <div class="card">
