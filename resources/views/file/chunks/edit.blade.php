@@ -56,6 +56,10 @@
                             <input type="checkbox" class="form-check-input" id="stop_word" name="stop_word" value="1"@if ($libraryFile->stop_word) checked="checked"@endif>
                             <label class="form-check-label" for="lowercase">Use stop words</label>
                         </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" disabled="disabled">
+                            <label class="form-check-label text-secondary">TF-IDF <span class="badge bg-success text-white">Soon</span></label>
+                        </div>
                     </div>
                 </div>
             </div>
