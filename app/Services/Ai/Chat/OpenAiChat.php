@@ -24,7 +24,7 @@ class OpenAiChat implements AiChat
 
         $response = $client->chat()->create($data);
 
-        $result = trim($response->choices[0]->text ?? '');
+        $result = trim($response->choices[0]->message->content ?? '');
 
         if (strpos($result, "\n\n") !== false) {
             $result = '<p>' . str_replace("\n\n", '</p><p>', $result) . '</p>';

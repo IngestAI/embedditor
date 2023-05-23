@@ -61,20 +61,15 @@ Embedding your content to vector space increases its size, requiring up to 10X o
 
 ### Installation
 
-1. Install docker image
+1. Copy .env.example into .env
 
-   `docker pull embedditor/embedditor:latest`
-
-
-4. Copy .env.example into .env
-
-5. Set the following settings in the .env
+2. Set the following settings in the .env
 
 
     `OPENAI_API_KEY=`
 
 
-6. Setup the project
+3. Setup the project
 
 - `php artisan migrate`
 - `php artisan db:seed`
