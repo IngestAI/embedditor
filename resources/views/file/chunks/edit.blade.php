@@ -33,10 +33,10 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="optimize" name="optimize" value="1"@if ($libraryFile->strip_tag) checked="checked"@endif>
+                            <input type="checkbox" class="form-check-input" id="optimize" name="optimize" value="1"@if ($libraryFile->isOptimize()) checked="checked"@endif>
                             <label class="form-check-label" for="optimize">Optimize content</label>
                         </div>
-                        <p>XX out of YY words choosen for embedding. Storage optimized: ≈ 35%</p>
+                        <p>{{ $libraryFile->total_embedded_words }} out of {{ $libraryFile->total_words }} words choosen for embedding. Storage optimized: ≈ {{ $libraryFile->getTotalPercentage() }}%</p>
                         <input class="btn btn-success" type="submit" value="Apply" />
                     </div>
                 </div>
