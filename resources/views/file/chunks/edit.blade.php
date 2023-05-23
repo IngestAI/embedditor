@@ -93,25 +93,20 @@
                                 <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
                                         @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
-                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                                Show more
-                                            </button>
+                                            <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">Embeddable Content</button>
                                         @else
                                         @endif
-
                                         @if($key < count($chunks['html']) - 1)
-                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">Join chunks</button>
+                                            <button type="button" class="btn btn-link js_join-chunks" data-chunk-key="{{$key}}">Join Chunks</button>
                                         @endif
                                     </div>
                                     <div class="collapse" id="collapse{{$key}}">
                                         <div class="card card-body rounded-0">
-
                                             <div class="js_chunk-item-text">
                                                 @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
                                                     {!! $chunks['texts'][$key] !!}
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
