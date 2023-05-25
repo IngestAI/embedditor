@@ -10,6 +10,17 @@
 
 Embedditor is an open source editor that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
+# Features
+**Rich Spreadsheet Interface**
+
+- ⚡ **Join and split one or multiple chunks with a few clicks
+- ⚡ **Exclude words, sentences, or even parts of chunks from embedding
+- ⚡ **Select the parts of chunk you want to be embedded
+- ⚡ **Add additional information to your mebeddings, like url links or images
+- ⚡ **Get a nice looking HTML-markup for your AI search results
+- ⚡ **Filteer our from vectorization most of the 'noise' like punctuations or stop-words
+- ⚡ **Save your pre-processed embedding files in .veml or .jason formats
+
 ### Embed like a pro
 
 Work on your embedding metadata and tokens with a user-friendly UI. Seamlessly cleanse, normalize, and enrich your embedding tokens, improving efficiency and accuracy in your LLM-related applications.
