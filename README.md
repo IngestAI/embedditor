@@ -5,9 +5,9 @@
 
 </p>
 
-<center>
+
 # Get the most out of your vector search
-</center>
+
 
 Embedditor is an open source embedding pre-reprocessing editor, that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
