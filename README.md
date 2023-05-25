@@ -76,7 +76,7 @@ A hidden embedding token is a token that will be embedded for vector storage but
 Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage. -->
 
 
-### Installation
+## Installation
 
 1. Copy .env.example into .env
 
