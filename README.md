@@ -14,27 +14,27 @@ Embedditor is an open source editor that helps you edit GPT / LLM embeddings jus
 **Rich editor Interface**
 
 - ⚡ Join and split one or multiple chunks with a few clicks
-- ⚡ **Edit embedding metadata and tokens
-- ⚡ **Exclude words, sentences, or even parts of chunks from embedding
-- ⚡ **Select the parts of chunk you want to be embedded
-- ⚡ **Add additional information to your mebeddings, like url links or images
-- ⚡ **Get a nice looking HTML-markup for your AI search results
-- ⚡ **Save your pre-processed embedding files in .veml or .jason formats
+- ⚡ Edit embedding metadata and tokens
+- ⚡ Exclude words, sentences, or even parts of chunks from embedding
+- ⚡ Select the parts of chunk you want to be embedded
+- ⚡ Add additional information to your mebeddings, like url links or images
+- ⚡ Get a nice looking HTML-markup for your AI search results
+- ⚡ Save your pre-processed embedding files in .veml or .jason formats
 
 **Embedding pre-processing automation**
-- ⚡ **Filteer our from vectorization most of the 'noise', like punctuations or stop-words
-- ⚡ **Remove from embedidng unsignificant, requently used words with TF-IDF algorithm
-- ⚡ **Normalize your embedding tokens before vectorization
+- ⚡ Filteer our from vectorization most of the 'noise', like punctuations or stop-words
+- ⚡ Remove from embedidng unsignificant, requently used words with TF-IDF algorithm
+- ⚡ Normalize your embedding tokens before vectorization
 
 # Benefits
 **Rich Spreadsheet Interface**
 
-- ⚡ **Optimized relevance of the content retrieved from a vector database
-- ⚡ **Improved efficiency and accuracy in your AI / LLM-related applications
-- ⚡ **Visually better looking search results with images, url links, etc
-- ⚡ **Increased cost-efficiency with up to 30% cost-reduction on embedding and vector storage
-- ⚡ **Full control over your data, effortlessly deploying Embedditor locally on your PC or dedicated envirement
-- ⚡ **Save your pre-processed or ready embeddings in .json or .veml format to use it in LangChain, Chromat or any other Vector DB
+- ⚡ Optimized relevance of the content retrieved from a vector database
+- ⚡ Improved efficiency and accuracy in your AI / LLM-related applications
+- ⚡ Visually better looking search results with images, url links, etc
+- ⚡ Increased cost-efficiency with up to 30% cost-reduction on embedding and vector storage
+- ⚡ Full control over your data, effortlessly deploying Embedditor locally on your PC or dedicated envirement
+- ⚡ Save your pre-processed or ready embeddings in .json or .veml format to use it in LangChain, Chromat or any other Vector DB
 
 
 ## Quick try
