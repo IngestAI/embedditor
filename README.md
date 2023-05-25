@@ -2,9 +2,7 @@
 
 <p align="center">
   <img width="300" height="300" src="https://embedditor.ingestai.co/images/logo.jpg">
-</p>
 
-<p style="text-align: center;">
 
 # Get the most out of your vector search
 
