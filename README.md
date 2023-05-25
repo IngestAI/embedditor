@@ -6,45 +6,35 @@
 
 
 
-## Get the most out of your vector search
+# Get the most out of your vector search
 
 Embedditor is an open source editor that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
 # Features
-**Rich Spreadsheet Interface**
+**Rich editor Interface**
 
 - ⚡ **Join and split one or multiple chunks with a few clicks
+- ⚡ **Edit embedding metadata and tokens
 - ⚡ **Exclude words, sentences, or even parts of chunks from embedding
 - ⚡ **Select the parts of chunk you want to be embedded
 - ⚡ **Add additional information to your mebeddings, like url links or images
 - ⚡ **Get a nice looking HTML-markup for your AI search results
-- ⚡ **Filteer our from vectorization most of the 'noise' like punctuations or stop-words
 - ⚡ **Save your pre-processed embedding files in .veml or .jason formats
 
-### Embed like a pro
+**Embedding pre-processing automation**
+- ⚡ **Filteer our from vectorization most of the 'noise', like punctuations or stop-words
+- ⚡ **Remove from embedidng unsignificant, requently used words with TF-IDF algorithm
+- ⚡ **Normalize your embedding tokens before vectorization
 
-Work on your embedding metadata and tokens with a user-friendly UI. Seamlessly cleanse, normalize, and enrich your embedding tokens, improving efficiency and accuracy in your LLM-related applications.
+# Benefits
+**Rich Spreadsheet Interface**
 
-### Uplevel your vector search
-
-Optimize the relevance of the content you get back from a vector database, intelligently splitting or merging the content based on its structure and adding void or hidden tokens, making chunks even more semantically coherent.
-
-### Automate with NLP algorithms
-
-Apply TF-IDF model with one click to determine unsignificant words in your documents and filter their tokens out of embedding to get even better vector search results and save on vector storage.
-
-### Get the full control over your data
-
-Get the full control over your data effortlessly deploying Embedditor locally on your PC or in your dedicated enterprise cloud or on-premises environment.
-
-### Reduce your costs
-
-Applying Embedditor cleansing of irrelevant tokens like stop-words, punctuations, and low-relevant words you can save up to 70% on the cost of vector storage and embedding.
-
-
-### Use it anywhere
-
-Save your processed embedding metadata and tokens in .embs or json to share it with your team, use it in LangChain, or upload to any vector database, like Chroma.
+- ⚡ **Optimized relevance of the content retrieved from a vector database
+- ⚡ **Improved efficiency and accuracy in your AI / LLM-related applications
+- ⚡ **Visually better looking search results with images, url links, etc
+- ⚡ **Increased cost-efficiency with up to 30% cost-reduction on embedding and vector storage
+- ⚡ **Full control over your data, effortlessly deploying Embedditor locally on your PC or dedicated envirement
+- ⚡ **Save your pre-processed or ready embeddings in .json or .veml format to use it in LangChain, Chromat or any other Vector DB
 
 
 ## Quick try
