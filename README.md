@@ -13,7 +13,7 @@ Embedditor is an open source editor that helps you edit GPT / LLM embeddings jus
 # Features
 **Rich editor Interface**
 
-- ⚡ **Join and split one or multiple chunks with a few clicks
+- ⚡ Join and split one or multiple chunks with a few clicks
 - ⚡ **Edit embedding metadata and tokens
 - ⚡ **Exclude words, sentences, or even parts of chunks from embedding
 - ⚡ **Select the parts of chunk you want to be embedded
