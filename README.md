@@ -12,38 +12,52 @@
 [![PHP version](https://img.shields.io/badge/PHP%208.2-brightgreen)](http://php.org)
 [![Laravel version](https://img.shields.io/badge/Laravel%2010.x-green.svg)](https://conventionalcommits.org)
 
-### Get the most out of your vector search
+# Get the most out of your vector search
 
-Embedditor is an open source embedding pre-processing technology that helps you get the most out of your vector search, while reducing costs of embedding and vector storage.
+Embedditor is an open source embedding pre-reprocessing editor, that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
-### Embed like a pro
+# Features
+**Rich editor Interface**
 
-Work on your embedding metadata and tokens with a user-friendly UI. Seamlessly cleanse, normalize, and enrich your embedding tokens, improving efficiency and accuracy in your LLM-related applications.
+- ⚡ Join and split one or multiple chunks with a few clicks
+- ⚡ Edit embedding metadata and tokens
+- ⚡ Exclude words, sentences, or even parts of chunks from embedding
+- ⚡ Select the parts of chunk you want to be embedded
+- ⚡ Add additional information to your mebeddings, like url links or images
+- ⚡ Get a nice looking HTML-markup for your AI search results
+- ⚡ Save your pre-processed embedding files in .veml or .jason formats
 
-### Uplevel your vector search
+**Pre-processing automation**
+- ⚡ Filteer our from vectorization most of the 'noise', like punctuations or stop-words
+- ⚡ Remove from embedidng unsignificant, requently used words with TF-IDF algorithm
+- ⚡ Normalize your embedding tokens before vectorization
 
-Optimize the relevance of the content you get back from a vector database, intelligently splitting or merging the content based on its structure and adding void or hidden tokens, making chunks even more semantically coherent.
+# Benefits
+**Rich Spreadsheet Interface**
 
-### Automate with NLP algorithms
-
-Apply TF-IDF model with one click to determine unsignificant words in your documents and filter their tokens out of embedding to get even better vector search results and save on vector storage.
-
-### Get the full control over your data
-
-Get the full control over your data effortlessly deploying Embedditor locally on your PC or in your dedicated enterprise cloud or on-premises environment.
-
-### Reduce your costs
-
-Applying Embedditor cleansing of irrelevant tokens like stop-words, punctuations, and low-relevant words you can save up to 70% on the cost of vector storage and embedding.
+- ⚡ Optimized relevance of the content retrieved from a vector database
+- ⚡ Improved efficiency and accuracy in your AI / LLM-related applications
+- ⚡ Visually better looking search results with images, url links, etc
+- ⚡ Increased cost-efficiency with up to 30% cost-reduction on embedding and vector storage
+- ⚡ Full control over your data, effortlessly deploying Embedditor locally on your PC or dedicated envirement
+- ⚡ Save your pre-processed or ready embeddings in .json or .veml format to use it in LangChain, Chromat or any other Vector DB
 
 
-### Use it anywhere
+## Quick try
+**Sign up for free and try it in [IngestAI](https://ingestai.io/signup).**
 
-Save your processed embedding metadata and tokens in .embs or json to share it with your team, use it in LangChain, or upload to any vector database, like Chroma.
+<!-- # Rich Spreadsheet Interface
 
-**Try it now with [IngestAI](https://ingestai.io/signup).**
+- ⚡ **Basic Operations**: Create, Read, Update and Delete Tables, Columns, and Rows
+- ⚡ **Fields Operations**: Sort, Filter, Hide / Unhide Columns
+- ⚡ **Multiple Views Types**: Grid (By default), Gallery, Form View, and Kanban View
+- ⚡ **View Permissions Types**: Collaborative Views, & Locked Views
+- ⚡ **Share Bases / Views**: either Public or Private (with Password Protected)
+- ⚡ **Variant Cell Types**: ID, LinkToAnotherRecord, Lookup, Rollup, SingleLineText, Attachment, Currency, Formula, etc
+- ⚡ **Access Control with Roles**: Fine-grained Access Control at different levels
+- ⚡ **and more** -->
 
-### FAQ
+<!-- ### FAQ
 
 **What is embedding (vectorization)?**
 
@@ -62,25 +76,20 @@ A void (embedding) tokens are words in your content (embedding metadata), that w
 A hidden embedding token is a token that will be embedded for vector storage but doesn’t appear in your metadata – the content you will retrieve using vector search.
 
 **What size have embeddings?**
-Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage.
+Embedding your content to vector space increases its size, requiring up to 10X of storage space than your row content. That is why filtering out unnecessary and low-relevant tokens not only improves your vector search but also helps you reduce cost of embedding and storage. -->
 
 
-### Installation
+## Installation
 
-1. Install docker image
+1. Copy .env.example into .env
 
-   `docker pull embedditor/embedditor:latest`
-
-
-4. Copy .env.example into .env
-
-5. Set the following settings in the .env
+2. Set the following settings in the .env
 
 
     `OPENAI_API_KEY=`
 
 
-6. Setup the project
+3. Setup the project
 
 - `php artisan migrate`
 - `php artisan db:seed`

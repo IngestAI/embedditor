@@ -77,6 +77,7 @@ class LibraryFile extends Model
         $storage = new UploadedStepService();
         if ($storage->exists($convertedFilePath)) {
             $this->formatted = true;
+            $this->total_words = $this->getTotalRawWords();
             $this->save();
         }
     }
@@ -180,6 +181,7 @@ class LibraryFile extends Model
 
         if ($embeddedStorage->exists($convertedFilePath)) {
             $this->embedded = true;
+            $this->total_embedded_words = $this->getTotalEmbeddedWords();
             $this->save();
         }
     }
@@ -212,6 +214,46 @@ class LibraryFile extends Model
             . '/' . round($this->library_id/1000, 0)
             . '/'
             . $this->id
-            . '.embd';
+            . '.veml';
+    }
+
+    public function getTotalRawWords(): int
+    {
+        $path = $this->getPathToSavingConvertedFile();
+        $rawStorage = new UploadedStepService();
+
+        return str_word_count($rawStorage->get($path));
+    }
+
+    public function getTotalEmbeddedWords(): int
+    {
+        $path = $this->getPathToSavingEmbeddedFile();
+        $embeddingStorage = new EmbeddedStepService();
+        $embeddingData = json_decode($embeddingStorage->get($path), true);
+        $embeddingText = $embeddingData['texts'] ?? [];
+
+
+        $countWords = 0;
+        foreach ($embeddingText as $embeddingItem) {
+            $countWords += str_word_count($embeddingItem);
+        }
+
+        return $countWords;
+    }
+
+    public function getTotalPercentage()
+    {
+        return $this->total_embedded_words
+            ? round(100 - 100 * (($this->total_words - ($this->total_words - $this->total_embedded_words)) / $this->total_words))
+            : 0;
+    }
+
+    public function isOptimize()
+    {
+        return $this->stop_word &&
+            $this->lowercase &&
+            $this->strip_tag &&
+            $this->strip_punctuation &&
+            $this->strip_special_char;
     }
 }
