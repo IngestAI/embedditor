@@ -10,10 +10,10 @@
 
 <p align="center">Embedditor is the open-source MS Word equivalent for embedding that helps you get the most out of your vector search.</p>
 
-<p align="center">
+<center>
 [![PHP version](https://img.shields.io/badge/PHP%208.2-brightgreen)](http://php.org)
 [![Laravel version](https://img.shields.io/badge/Laravel%2010.x-green.svg)](https://conventionalcommits.org)
-</p>
+</center>
 
 <p align="center">
     <a href="https://embedditor.ai"><b>Website</b></a> •
