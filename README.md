@@ -6,8 +6,9 @@
             Embedditor
         </a>
     </div>
-    Embedditor is the open-source MS Word equivalent for embedding that helps you get the most out of your vector search.<br>
 </h1>
+
+<p align="center">Embedditor is the open-source MS Word equivalent for embedding that helps you get the most out of your vector search.</p>
 
 [![PHP version](https://img.shields.io/badge/PHP%208.2-brightgreen)](http://php.org)
 [![Laravel version](https://img.shields.io/badge/Laravel%2010.x-green.svg)](https://conventionalcommits.org)
