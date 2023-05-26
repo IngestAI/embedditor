@@ -66,6 +66,17 @@ Embedditor is an open source embedding pre-reprocessing editor, that helps you e
 ## Quick try
 **Sign up for free and try it in [IngestAI](https://ingestai.io/signup).**
 
+# GUI
+
+Access Dashboard using: [http://localhost:8080/](http://localhost:8080/)
+
+# Screenshots
+
+![1](https://embedditor.ai/embedditor_ui_01.png)
+![2](https://embedditor.ai/embedditor_ui_02.png)
+![3](https://embedditor.ai/embedditor_ui_03.png)
+![4](https://embedditor.ai/embedditor_ui_04.png)
+
 <!-- # Rich Spreadsheet Interface
 
 - ⚡ **Basic Operations**: Create, Read, Update and Delete Tables, Columns, and Rows
