@@ -73,10 +73,10 @@ Access Dashboard using: [http://localhost:8080/](http://localhost:8080/)
 
 # Screenshots
 
-![1](https://embedditor.ai/embedditor_ui_01.png)
-![2](https://embedditor.ai/embedditor_ui_02.png)
-![3](https://embedditor.ai/embedditor_ui_03.png)
-![4](https://embedditor.ai/embedditor_ui_04.png)
+![1](https://embedditor.ai/images/embedditor_ui_01.png)
+![2](https://embedditor.ai/images/embedditor_ui_02.png)
+![3](https://embedditor.ai/images/embedditor_ui_03.png)
+![4](https://embedditor.ai/images/embedditor_ui_04.png)
 
 <!-- # Rich Spreadsheet Interface
 
