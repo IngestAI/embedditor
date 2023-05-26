@@ -21,6 +21,7 @@
     <a href="https://embedditor.ai"><b>Website</b></a> •
     <a href="https://discord.gg/7gF8dVv86E"><b>Discord</b></a> •
     <a href="https://twitter.com/embedditor"><b>Twitter</b></a> •
+    <a href="https://github.com/embedditor/embedditor/wiki/Embedditor-Docs"><b>Documentation</b></a> •
     <a href="https://ingestai.io"><b>Try demo on IngestAI</b></a>
 </p>
 
