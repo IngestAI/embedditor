@@ -26,6 +26,14 @@
 
 Embedditor is an open source embedding pre-reprocessing editor, that helps you edit GPT / LLM embeddings just as if it's a Microsoft Word document, so you can get the most out of your vector search, while significanty reducing costs of embedding and vector storage.
 
+# Join Our Community
+
+<a href="https://discord.gg/7gF8dVv86E" target="_blank">
+<img src="https://discordapp.com/api/guilds/978672019442905198/widget.png?style=banner3" alt="">
+</a>
+
+[![Stargazers repo roster for @embedditor/embedditor](https://reporoster.com/stars/embedditor/embedditor)](https://github.com/embedditor/embedditor/stargazers)
+
 # Features
 **Rich editor Interface**
 
