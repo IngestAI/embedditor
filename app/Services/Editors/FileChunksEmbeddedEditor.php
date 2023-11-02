@@ -80,11 +80,6 @@ class FileChunksEmbeddedEditor extends BaseFileChunks
         // removed hidden (red) text
         $chunk = preg_replace('/<span style="background-color: rgb\(230, 0, 0\);">([^<]+)<\/span>/', '', $chunk);
 
-        // get keywords (green) text
-        preg_match_all('/<span style="background-color: rgb\(0, 138, 0\);">([^<]+)<\/span>/', $chunk, $matches);
-        $keyWords = !empty($matches[1]) ? implode(',', $matches[1]) : '';
-
-        // chunkRequest
-        return $keyWords ?: strip_tags(trim($chunk));
+        return strip_tags(trim($chunk));
     }
 }

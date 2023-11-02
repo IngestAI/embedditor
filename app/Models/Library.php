@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Ai\AiService;
+use App\Services\Editors\Filters\Chains\PlaygroundSendFilterChain;
 use App\Services\Storage\Adapters\EmbeddedStepService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,9 +38,9 @@ class Library extends Model
             $pathJson = $libraryFile->getPathToSavingEmbeddedFile();
             if (!$storage->exists($pathJson)) continue;
             $fileData = json_decode($storage->get($pathJson), true);
-            if (empty($fileData['texts']) || empty($fileData['vectors'])) continue;
-            foreach ($fileData['texts'] as $key => $text) {
-                $libraryData['texts'][] = $text;
+            if (empty($fileData['html']) || empty($fileData['vectors'])) continue;
+            foreach ($fileData['html'] as $key => $text) {
+                $libraryData['texts'][] = PlaygroundSendFilterChain::make($text)->handle();
                 $libraryData['vectors'][] = (!empty($fileData['vectors'][$key]) ? $fileData['vectors'][$key] : []);
             }
         }
@@ -67,10 +68,13 @@ class Library extends Model
             }
         }
 
+        $firstChunk = $libraryData['texts'][$choosenVector] ?? '';
+        $secondChunk = $libraryData['texts'][$secondVector] ?? '';
+
         return 'Answer the question as truthfully as possible using the provided text'
             . "\n\n" . 'Context:' . "\n"
-            . $libraryData['texts'][$choosenVector] .
-            (!empty($libraryData['texts'][$secondVector]) ? "\n\n" . $libraryData['texts'][$secondVector] : '')
+            . $firstChunk .
+            (!empty($secondChunk) ? "\n\n" . $secondChunk : '')
             . "\n\n" . 'Q: ' . $query . "\n" . 'A:';
     }
 }

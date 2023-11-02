@@ -54,6 +54,7 @@ RUN chmod 0755 /docker/startup.sh
 
 # Set working directory
 WORKDIR /var/www
+RUN chmod -R 0777 /var/www/storage
 
 COPY . /var/www/
 RUN composer install --no-scripts --optimize-autoloader
