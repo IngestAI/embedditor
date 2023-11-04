@@ -22,6 +22,8 @@ final class AiModelResolver
         switch ($this->slug) {
             case 'gpt-3.5-turbo':
                 return new Gpt35TurboAiModel($query);
+            case 'gpt-3.5-turbo-16k':
+                return new Gpt35Turbo16KAiModel($query);
             case 'gpt-4':
                 return new Gpt4AiModel($query);
             case 'text-davinci-003':
