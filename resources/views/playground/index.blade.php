@@ -79,11 +79,35 @@
                         if (j.result === 1) {
                             $('#request-loader').hide();
                             $('#request-content').show();
+                            let html = '<div><strong>Answer:</strong></div>'
                             if (j.image) {
-                                $('#request-answer').html('<img src="data:image/png;base64,' + j.image + '" class="img-fluid" />');
+                                html += '<img src="data:image/png;base64,' + j.image + '" class="img-fluid" />'
                             } else {
-                                $('#request-answer').html(j.answer);
+                                html += j.answer
                             }
+                            const images = j.attachments.images || []
+                            const links = j.attachments.links || []
+                            if (Object.keys(links).length) {
+                                html += '<div><strong>Links:</strong></div>'
+                                for (let index in links) {
+                                    html += `
+                                        <div>
+                                            <a target="_blank" href="${links[index]}">${links[index]}</a>
+                                        </div>
+                                    `
+                                }
+                            }
+                            if (Object.keys(images).length) {
+                                html += '<div><strong>Images:</strong></div>'
+                                for (let index in images) {
+                                    html += `
+                                            <div>
+                                                <img src="${images[index]}" width="300" height="200"/>
+                                            </div>
+                                        `
+                                }
+                            }
+                            $('#request-answer').html(html)
                         } else if (j.result == 2) {
                             alert('Error: ' + j.error);
                         } else {

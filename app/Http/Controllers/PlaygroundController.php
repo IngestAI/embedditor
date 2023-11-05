@@ -34,9 +34,12 @@ class PlaygroundController extends Controller
 
         $requestQuery = $filteredQuery = PlaygroundEditorFilterChain::make($query)->handle();
 
+        $attachments = [];
         if ($request->search_type !== 'vector_search') {
             $library = Library::default();
-            $requestQuery = $library->getRequestQuery($filteredQuery);
+            $requestData = $library->getRequestQuery($filteredQuery);
+            $requestQuery = $requestData['prompt'] ?? '';
+            $attachments = $requestData['attachments'] ?? [];
         }
 
         $aiModel = AiModelResolver::make($providerModel->slug)->resolve($requestQuery);
@@ -61,6 +64,6 @@ class PlaygroundController extends Controller
             return response()->json(['result' => 2, 'answer' => $e->getMessage()]);
         }
 
-        return response()->json(['result' => 1, 'answer' => $answer]);
+        return response()->json(['result' => 1, 'answer' => $answer, 'attachments' => $attachments]);
     }
 }

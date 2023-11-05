@@ -8,9 +8,10 @@ class LocalStorageDriver implements StorageDriver
 {
     const DISK_LOCAL = 'local';
 
-    public function upload(string $path, $file): bool
+    public function upload(string $path, $file, string $visibility = ''): bool
     {
-        return Storage::disk(self::DISK_LOCAL)->put($path, $file);
+        $visibility = $visibility ?: [];
+        return Storage::disk(self::DISK_LOCAL)->put($path, $file, $visibility);
     }
 
     public function uploadFromStream(string $path, $sourceStream): mixed
@@ -42,6 +43,11 @@ class LocalStorageDriver implements StorageDriver
     public function delete(string $path): bool
     {
         return Storage::disk(self::DISK_LOCAL)->delete($path);
+    }
+
+    public function url(string $path): string
+    {
+        return Storage::disk(self::DISK_LOCAL)->url($path);
     }
 
     public function path(string $path): string

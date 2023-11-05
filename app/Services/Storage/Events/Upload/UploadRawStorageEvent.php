@@ -9,10 +9,10 @@ use App\Services\Storage\Handlers\Upload\UploadRawLocalStorageHandler;
 
 class UploadRawStorageEvent extends BaseUploadStorageEvent
 {
-    protected function setConsumers(string $path, string $file): void
+    protected function setConsumers(string $path, string $file, string $visibility = ''): void
     {
         $this->consumers = [
-            new UploadRawLocalStorageHandler(new LocalStorageDriver(), $path, $file),
+            new UploadRawLocalStorageHandler(new LocalStorageDriver(), $path, $file, $visibility),
         ];
     }
 }

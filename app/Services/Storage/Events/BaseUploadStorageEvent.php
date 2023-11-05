@@ -9,11 +9,11 @@ abstract class BaseUploadStorageEvent implements StorageEvent
 
     protected array $results = [];
 
-    abstract protected function setConsumers(string $path, string $file): void;
+    abstract protected function setConsumers(string $path, string $file, string $visibility = ''): void;
 
-    public function __construct(string $path, string $file)
+    public function __construct(string $path, string $file, string $visibility = '')
     {
-        $this->setConsumers($path, $file);
+        $this->setConsumers($path, $file, $visibility);
     }
 
     public function exec(): StorageEvent

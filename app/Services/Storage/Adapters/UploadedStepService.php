@@ -7,15 +7,16 @@ use App\Services\Storage\Events\Delete\DeleteRawStorageEvent;
 use App\Services\Storage\Events\Download\DownloadRawStorageEvent;
 use App\Services\Storage\Events\Exists\ExistsRawStorageEvent;
 use App\Services\Storage\Events\Get\GetRawStorageEvent;
-use App\Services\Storage\Events\Path\PathRawStorageEvent;
 use App\Services\Storage\Events\Upload\UploadRawStorageEvent;
 use App\Services\Storage\Events\UploadStream\UploadStreamRawStorageEvent;
+use App\Services\Storage\Events\Path\PathRawStorageEvent;
+use App\Services\Storage\Events\Url\UrlRawStorageEvent;
 
 class UploadedStepService implements StorageStepService
 {
-    public function upload(string $path, string $file): bool
+    public function upload(string $path, string $file, string $visibility = ''): bool
     {
-        $event = new UploadRawStorageEvent($path, $file);
+        $event = new UploadRawStorageEvent($path, $file, $visibility);
 
         return $event->exec()->getResult();
     }
@@ -58,6 +59,13 @@ class UploadedStepService implements StorageStepService
     public function delete(string $path): bool
     {
         $event = new DeleteRawStorageEvent($path);
+
+        return $event->exec()->getResult();
+    }
+
+    public function url(string $path): string
+    {
+        $event = new UrlRawStorageEvent($path);
 
         return $event->exec()->getResult();
     }

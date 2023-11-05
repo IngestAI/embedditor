@@ -7,25 +7,22 @@ use App\Services\Storage\Drivers\StorageDriver;
 
 abstract class BaseUploadStorageHandler implements StorageHandler
 {
-    protected StorageDriver $driver;
-
-    protected string $path, $file;
-
     protected bool $isUploaded = true;
 
     abstract protected function check(): bool;
 
-    public function __construct(StorageDriver $driver, string $path, string $file)
+    public function __construct(
+        protected StorageDriver $driver,
+        protected string $path,
+        protected string $file,
+        protected string $visibility = '')
     {
-        $this->driver = $driver;
-        $this->path = $path;
-        $this->file = $file;
     }
 
     public function handle(): void
     {
         if ($this->check()) {
-            $this->isUploaded = $this->driver->upload($this->path, $this->file);
+            $this->isUploaded = $this->driver->upload($this->path, $this->file, $this->visibility);
         }
     }
 

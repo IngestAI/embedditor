@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChunkUpdateRequest;
 use App\Http\Requests\FileUploadRequest;
 use App\Models\LibraryFile;
 use App\Services\Editors\FileChunksEditor;
 use App\Services\Editors\FileChunksEmbeddedEditor;
+use App\Services\Storage\Adapters\UploadedStepService;
+use App\Services\Storage\Drivers\StorageDriver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class FileEditorController extends Controller
 {
@@ -60,7 +64,7 @@ class FileEditorController extends Controller
         ]);
     }
 
-    public function chunksUpdate(LibraryFile $libraryFile, Request $request)
+    public function chunksUpdate(LibraryFile $libraryFile, ChunkUpdateRequest $request)
     {
         $data = $this->fileChunksEditorService->reorderDataKeys($request->chunks, $request->chunked_list);
 
@@ -74,6 +78,8 @@ class FileEditorController extends Controller
         $libraryFile->strip_special_char = (bool) ($request->optimize ?? false);
         $libraryFile->chunked_list = $data['chunkedList'];
         $libraryFile->save();
+        $libraryFile->saveFiles($request->images);
+        $libraryFile->saveLinks($request->links);
 
         if (!$this->fileChunksEditorService->updateItemChunked($libraryFile, $data['chunks'])) {
             return back()->with('status', 'file-updated-error');
