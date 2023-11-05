@@ -11,12 +11,13 @@ use App\Services\Storage\Events\Get\GetEmbeddedStorageEvent;
 use App\Services\Storage\Events\Path\PathEmbeddedStorageEvent;
 use App\Services\Storage\Events\Upload\UploadEmbeddedStorageEvent;
 use App\Services\Storage\Events\UploadStream\UploadStreamEmbeddedStorageEvent;
+use App\Services\Storage\Events\Url\UrlEmbeddedStorageEvent;
 
 class EmbeddedStepService implements StorageStepService
 {
-    public function upload(string $path, string $file): bool
+    public function upload(string $path, string $file, string $visibility = ''): bool
     {
-        $event = new UploadEmbeddedStorageEvent($path, $file);
+        $event = new UploadEmbeddedStorageEvent($path, $file, $visibility);
 
         return $event->exec()->getResult();
     }
@@ -60,6 +61,12 @@ class EmbeddedStepService implements StorageStepService
     {
         $event = new DeleteEmbeddedStorageEvent($path);
 
+        return $event->exec()->getResult();
+    }
+
+    public function url(string $path): string
+    {
+        $event = new UrlEmbeddedStorageEvent($path);
         return $event->exec()->getResult();
     }
 

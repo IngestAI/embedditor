@@ -125,3 +125,4 @@ Embedding your content to vector space increases its size, requiring up to 10X o
 
 - `php artisan migrate`
 - `php artisan db:seed`
+- `php artisan storage:link`

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LibraryFile extends Model
 {
-    use HasFactory;
+    use HasFactory, LibraryFileChunkAttachment;
 
     const DEFAULT_CHUNK_SEPARATOR = '=====';
 
@@ -24,6 +24,8 @@ class LibraryFile extends Model
     const DISK_CORE_PATH = 'libraries';
     const DISK_SUB_PATH_RAW = 'raw';
     const DISK_SUB_PATH_DB = 'db';
+
+    const DISK_SUB_PATH_ATTACHMENTS = 'attachments';
 
     protected $fillable = ['library_id', 'original_name', 'file_key', 'filename', 'strip_tag', 'strip_punctuation', 'strip_special_char'];
 
@@ -256,4 +258,6 @@ class LibraryFile extends Model
             $this->strip_punctuation &&
             $this->strip_special_char;
     }
+
+
 }

@@ -3,6 +3,9 @@
 namespace App\Services\Editors;
 
 use App\Models\LibraryFile;
+use App\Services\Storage\Adapters\UploadedStepService;
+use App\Services\Storage\Drivers\StorageDriver;
+use Illuminate\Support\Str;
 
 class FileChunksEditor extends BaseFileChunks
 {
@@ -24,6 +27,7 @@ class FileChunksEditor extends BaseFileChunks
         return [
             'html' => $embeddedFileHtml,
             'texts' => $embeddedFile->texts,
+            'attachments' => $libraryFile->getAttachments(),
         ];
     }
 

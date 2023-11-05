@@ -42,7 +42,18 @@ class Library extends Model
             foreach ($fileData['html'] as $key => $text) {
                 $libraryData['texts'][] = PlaygroundSendFilterChain::make($text)->handle();
                 $libraryData['vectors'][] = (!empty($fileData['vectors'][$key]) ? $fileData['vectors'][$key] : []);
+                $attachments = (!empty($fileData['meta']['chunks'][$key]) ? $fileData['meta']['chunks'][$key] : []);
+                foreach ($attachments['images'] as $indexNumber => $imageName) {
+                    $attachments['images'][$indexNumber] = $storage->url(
+                        $libraryFile->getPathToAttachments()
+                        . '/' . $key
+                        . '/' . $indexNumber
+                        . '/' . $imageName
+                    );
+                }
+                $libraryData['attachments'][] = $attachments;
             }
+
         }
 
         if (empty($libraryData['texts']) || empty($libraryData['vectors'])) {
@@ -71,10 +82,13 @@ class Library extends Model
         $firstChunk = $libraryData['texts'][$choosenVector] ?? '';
         $secondChunk = $libraryData['texts'][$secondVector] ?? '';
 
-        return 'Answer the question as truthfully as possible using the provided text'
-            . "\n\n" . 'Context:' . "\n"
-            . $firstChunk .
-            (!empty($secondChunk) ? "\n\n" . $secondChunk : '')
-            . "\n\n" . 'Q: ' . $query . "\n" . 'A:';
+        return [
+            'prompt' => 'Answer the question as truthfully as possible using the provided text'
+                . "\n\n" . 'Context:' . "\n"
+                . $firstChunk .
+                (!empty($secondChunk) ? "\n\n" . $secondChunk : '')
+                . "\n\n" . 'Q: ' . $query . "\n" . 'A:',
+            'attachments' => $libraryData['attachments'][$choosenVector] ?? [],
+        ];
     }
 }

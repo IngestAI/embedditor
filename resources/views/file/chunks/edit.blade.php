@@ -22,7 +22,7 @@
 
 @section('content')
 
-<form id="chunks-form" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
+<form id="chunks-form" enctype="multipart/form-data" method="POST" class="needs-validation" action="{{ route('web::file::chunks::update', ['library_file' => $libraryFile->id])  }}" novalidate>
     @csrf
     @method('put')
     <div class="mb-3">
@@ -105,6 +105,7 @@
                                 </div>
                                 <div class="mb-3 js_action-buttons">
                                     <div class="w-100 text-center">
+                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-attachments-{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">↑ Attaches</button>
                                         @if(empty($libraryFile->chunked_list) || (!empty($libraryFile->chunked_list) && isset($libraryFile->chunked_list[$key])))
                                             <button class="btn btn-link js_show-more" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">↓ See Embedding Tokens</button>
                                         @else
@@ -122,6 +123,76 @@
                                                 @endif
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="collapse mb-3" id="collapse-attachments-{{$key}}">
+                                        <div class="card card-body rounded-2">
+                                            <div class="row js_chunk-item-attachments">
+                                                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                                    <label for="links0" class="form-label">Links:</label>
+                                                    @if(!empty($chunks['attachments']) && !empty($chunks['attachments'][$key]) && !empty(!empty($chunks['attachments'][$key]['links'])))
+                                                        @foreach($chunks['attachments'][$key]['links'] as $keyLink => $link)
+                                                            <div class="mt-2 attachment-link-block" data-chunk="{{ $key }}" data-index="{{ $keyLink }}">
+                                                                <input name="attachments[{{$key}}][links][{{$keyLink}}]" value="{{$link}}" type="text" class="form-control attachment-link" id="links{{ $key }}{{ $keyLink }}" data-index="{{ $keyLink }}">
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="mt-2 attachment-link-block" data-chunk="{{ $key }}" data-index="0">
+                                                            <input name="attachments[{{$key}}][links][0]" value="" type="text" class="form-control attachment-link" id="links{{ $key }}0" data-index="0">
+                                                        </div>
+                                                    @endif
+                                                    <div class="row mb-12 mt-2">
+                                                        <div class="col-md-12">
+                                                            <button class="btn btn-secondary add-link" type="button" data-index="{{ $key }}">
+                                                                Add Link
+                                                            </button>
+                                                            <button class="btn btn-danger remove-link" type="button" data-index="{{ $key }}" @if (empty($chunks['attachments'][$key]['links']) || count($chunks['attachments'][$key]['links']) <= 1) style="display: none;"@endif>
+                                                                Remove Link
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-md-6">
+                                                    <label for="images0" class="form-label">Images:</label>
+                                                    @if(!empty($chunks['attachments']) && !empty($chunks['attachments'][$key]) && !empty($chunks['attachments'][$key]['images']))
+                                                        @foreach($chunks['attachments'][$key]['images'] as $imageKey => $imageUrl)
+                                                            <div class="row mt-2 attachment-image-block" data-chunk="{{ $key }}" data-index="{{ $keyLink }}">
+                                                                <div class="col-12 @if (!empty($image)) mb-2 mb-xl-0 col-xl-9 col-xxl-10 @endif">
+                                                                    <input type="file" name="attachments[{{ $key }}][images][{{ $imageKey }}]" accept="image/*" class="form-control attachment-image" id="images{{ $key }}{{ $keyLink }}">
+                                                                    <input type="hidden" name="attachments[{{ $key }}][imagesUrls][{{ $imageKey }}]" value="{{ $imageUrl }}">
+                                                                </div>
+
+                                                                @if (!empty($imageUrl))
+                                                                    <div class="col-12 col-xl-3 col-xxl-2">
+                                                                        <div style="max-width: 100px;">
+                                                                            <img class="img-fluid" src="{{ $imageUrl }}">
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="mt-2">
+                                                            <input type="file" name="attachments[{{$key}}][images][0]" accept="image/*" class="form-control attachment-link" id="images{{ $key }}0" data-index="0">
+                                                            <input type="hidden" name="attachments[{{$key}}][imagesUrls][0]"  value="">
+                                                        </div>
+                                                    @endif
+
+                                                    <div class="row mb-12 mt-2">
+                                                        <div class="col-md-12">
+                                                            <button class="btn btn-secondary add-image" type="button" data-index="{{ $key }}">
+                                                                Add Image
+                                                            </button>
+                                                            <button class="btn btn-danger remove-image" type="button" data-index="{{ $key }}" @if (empty($chunks['attachments'][$key]['images']) || count($chunks['attachments'][$key]['images']) <= 1) style="display: none;"@endif>
+                                                                Remove Image
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{--                                    </div>--}}
+
                                     </div>
                                 </div>
                             </div>
@@ -219,6 +290,49 @@
             });
         }
     }
+
+    $('.add-link').on('click', function() {
+        const chunk = $(this).data('index')
+        let lastBlock = $(`.attachment-link-block[data-chunk="${chunk}"]`).last()
+        const index = lastBlock.data('index') || 0
+        const appendBlock = `<div class="mt-2">
+            <input name="attachments[${chunk}][links][${index + 1}]" value="" type="text" class="form-control attachment-link" id="links${chunk}${index + 1}" data-index="${index + 1}">
+        </div>`
+        $(`.remove-link[data-index="${chunk}"]`).show()
+        lastBlock.after(appendBlock)
+    })
+
+    $('.remove-link').on('click', function() {
+        const chunk = $(this).data('index')
+        let lastBlock = $(`.attachment-link-block[data-chunk="${chunk}"]`).last()
+        const index = lastBlock.data('index') || 0
+        if (!index) return
+        if (index == 1) $(`.remove-link[data-index="${chunk}"]`).hide()
+        lastBlock.remove()
+    })
+
+    $('.add-image').on('click', function() {
+        const chunk = $(this).data('index')
+        let lastBlock = $(`.attachment-image-block[data-chunk="${chunk}"]`).last()
+        const index = lastBlock.data('index') || 0
+        const appendBlock = `<div class="row mt-2" data-chunk="${chunk}" data-index="${index + 1}">
+            <div class="mt-2">
+                <input type="file" name="attachments[${chunk}][images][${index + 1}]" accept="image/*" class="form-control" id="images${chunk}${index + 1}">
+                <input type="hidden" name="attachments[${chunk}][imagesUrls][${index + 1}]" value="">
+            </div>
+        </div>`
+        $(`.remove-image[data-index="${chunk}"]`).show()
+        lastBlock.after(appendBlock)
+    })
+
+    $('.remove-image').on('click', function() {
+        const chunk = $(this).data('index')
+        let lastBlock = $(`.attachment-image-block[data-chunk="${chunk}"]`).last()
+        const index = lastBlock.data('index') || 0
+        if (!index) return
+        if (index == 1) $(`.remove-image[data-index="${chunk}"]`).hide()
+        lastBlock.remove()
+    })
 </script>
 
 <script>
