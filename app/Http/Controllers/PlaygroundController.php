@@ -7,6 +7,7 @@ use App\Models\Library;
 use App\Models\ProviderModel;
 use App\Services\Ai\AiService;
 use App\Services\Ai\Models\AiModelResolver;
+use App\Services\Ai\Models\Gpt35Turbo16KAiModel;
 use App\Services\Ai\Models\Gpt35TurboAiModel;
 use App\Services\Ai\Models\Gpt4AiModel;
 use App\Services\Ai\Models\NullAiModel;
@@ -31,10 +32,12 @@ class PlaygroundController extends Controller
         $query = $request->q;
         $providerModel = $request->provider_model;
 
-        $filteredQuery = PlaygroundEditorFilterChain::make($query)->handle();
+        $requestQuery = $filteredQuery = PlaygroundEditorFilterChain::make($query)->handle();
 
-        $library = Library::default();
-        $requestQuery = $library->getRequestQuery($filteredQuery);
+        if ($request->search_type !== 'vector_search') {
+            $library = Library::default();
+            $requestQuery = $library->getRequestQuery($filteredQuery);
+        }
 
         $aiModel = AiModelResolver::make($providerModel->slug)->resolve($requestQuery);
         if ($aiModel instanceof NullAiModel) {
@@ -44,7 +47,9 @@ class PlaygroundController extends Controller
         $answer = '';
         try {
             $client = AiService::createCompletionFactory();
-            if ($aiModel instanceof Gpt4AiModel || $aiModel instanceof Gpt35TurboAiModel) {
+            if ($aiModel instanceof Gpt4AiModel
+                || $aiModel instanceof Gpt35TurboAiModel
+                || $aiModel instanceof Gpt35Turbo16KAiModel) {
                 $client = AiService::createChatFactory();
             }
             $response = $client->send($aiModel->getData());

@@ -25,6 +25,7 @@ class PlaygroundSendRequest extends FormRequest
         return [
             'q' => ['required', 'max:255'],
             'model_id' => ['required', 'exists:provider_models,id'],
+            'search_type' => ['required', 'in:rag,vector_search'],
         ];
     }
 
@@ -33,6 +34,7 @@ class PlaygroundSendRequest extends FormRequest
         return [
             'q.required' => 'The query is required',
             'model_id.exists' => 'The model is wrong',
+            'search_type.required' => 'The search type is required',
         ];
     }
 

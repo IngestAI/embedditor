@@ -30,6 +30,13 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="model">Search Type</label>
+                        <select class="form-control" id="search_type">
+                            <option value="rag" selected>RAG</option>
+                            <option value="vector_search">Vector Search</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="query">Your Query</label>
                         <textarea class="form-control" id="query" rows="3" placeholder="Your query or any phrase"></textarea>
                     </div>
@@ -66,6 +73,7 @@
                     $.post('{{ route('web::playground::send') }}', {
                         q: $('#query').val(),
                         model_id: $('#model').val(),
+                        search_type: $('#search_type').val(),
                         _token: '{{ csrf_token() }}'
                     }, function(j) {
                         if (j.result === 1) {
